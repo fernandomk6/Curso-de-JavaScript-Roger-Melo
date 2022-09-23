@@ -71,8 +71,11 @@ const typeSentence = `O tipo de dado que a const "isRandomTVShowIncluded" armaze
   caracteres? BOOLEAN."
 */
 
-// console.log(`A string que a "typeSentence" armazena tem mais de ${39}  
-// caracteres? ${String(typeSentence.length > 39)[0].toUpperCase()}${String(typeSentence.length > 39).slice(1)}`)
+const numberOfCaracters = 39
+const isTypeSentenceBigThanNumberOfCaracters = typeSentence.length > numberOfCaracters;
+
+// console.log(`A string que a "typeSentence" armazena tem mais de ${numberOfCaracters}  
+// caracteres? ${String(isTypeSentenceBigThanNumberOfCaracters)[0].toLocaleUpperCase()}${String(isTypeSentenceBigThanNumberOfCaracters).slice(1)}.`)
 
 /*
   06 - Comente o console.log() acima e:
@@ -147,4 +150,4 @@ const isNotAString = typeof randomTVShow !== 'string'
 
 const evenNumbers = [0, 2, 4, 6, 8, 10]
 
-console.log(evenNumbers.indexOf(8) !== -1)
+// console.log(evenNumbers.indexOf(8) !== -1)
