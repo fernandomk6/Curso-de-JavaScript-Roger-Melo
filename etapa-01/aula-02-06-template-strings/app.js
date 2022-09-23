@@ -1,15 +1,3 @@
-# Templates strings
-
-Quando você não for interpolar variáveis, usar aspas, ou quebrar linha,
-não tem a necessidade de usar templates strings.
-
-Agora se sua string precisa interpolar uma variável, ou conterá aspas, ou
-quebra de linha ou é um template html, sempre oppite por usar uma
-template string.
-
-## Tagged Template Strings
-
-```js
 // Tagged Template Literals
 
 const func = (strArray, variable1, variable2) => {
@@ -56,8 +44,21 @@ console.log(
     `
 )
 
-/*
-    <strong>Paulo Scalercio</strong> trabalha na Caelum/Alura como desenvolvedor e instrutor 
-    e você pode encontrá-lo nas redes sociais procurando por <strong>@PauloScalercio</strong>
-/*
-```
+
+// Outro exemplo
+
+const formatTextToHTML = (strings, ...values) => {
+    const result = strings.reduce((accumulator, string, index) => {
+      return `${accumulator}${string}${values[index] ? `<span>${values[index]}</span>` : ''}`
+  
+    }, '')
+  
+    console.log(result)
+  }
+  
+const name = 'Fernando'
+const age = 23
+const mother = 'Helenice'
+const newVariable = 'nova variavel'
+
+formatTextToHTML`${name} é filho da ${mother} e tem ${age} anos de idade e gosta de matemática ${newVariable}`
