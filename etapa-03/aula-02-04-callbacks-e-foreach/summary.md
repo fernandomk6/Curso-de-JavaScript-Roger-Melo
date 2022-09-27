@@ -97,6 +97,3 @@ código é executado. Isso acontece para cada item do array.
 Essa forma é igual a anterior porém o callback agora é nomeado.
 Isso torna o código mais legível e manutenivél e cria a possibilidade
 de reaproveitar essa função em outros locais.
-
-### Criando uma lista dinâmica
-
