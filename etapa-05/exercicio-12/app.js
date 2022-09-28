@@ -27,6 +27,31 @@ const best2019Movies = [
   { title: 'A Vida Invisível', directedBy: 'Karim Aïnouz' }
 ]
 
+const getBestMovies2019info = movies => {
+  let message = 'Segundo o site Omelete, os melhores filmes de 2019 são:'
+
+  // for (let index = 0; index < movies.length; index++) {
+  //   const movie = movies[index]
+  //   const title = movie.title
+  //   const directedBy = movie.directedBy
+
+  //   const movieInfo = `${title}, dirigido por ${directedBy}`
+  //   message += `
+  //   - ${movieInfo}`
+  // }
+
+  movies.forEach(movie => {
+    message += `
+      - ${movie.title}, dirigido por ${movie.directedBy}`
+  })
+
+  return message
+}
+
+const bestMovies2019info = getBestMovies2019info(best2019Movies)
+
+// console.log(bestMovies2019info)
+
 /*
   02
 
@@ -59,8 +84,24 @@ const youtubeUser = {
       gitHub: 'https://github.com/Roger-Melo'
     },
     country: 'Brasil'
+  },
+  getRecentVideosInfo () {
+    let recentsVideosInfo = `Vídeos recentes de ${this.name}:`
+    const recentVideos = this.videos.recentVideos
+
+    for (let index = 0; index < recentVideos.length; index++) {
+      const video = recentVideos[index]
+      const title = video.title
+
+      recentsVideosInfo += `
+        ${title}`
+    }
+
+    return recentsVideosInfo
   }
 }
+
+console.log(youtubeUser.getRecentVideosInfo())
 
 /*
   03
@@ -68,7 +109,9 @@ const youtubeUser = {
   - Exiba o valor do PI no console.
 */
 
+const PI = Math.PI
 
+// console.log(PI)
 
 /*
   04
@@ -79,6 +122,8 @@ const youtubeUser = {
 
 const firstNumber = 8.3
 
+// console.log(Math.ceil(firstNumber))
+
 /*
   05
 
@@ -87,6 +132,8 @@ const firstNumber = 8.3
 */
 
 const secondNumber = 3.5
+
+// console.log(Math.round(secondNumber))
 
 /*
   06
@@ -97,6 +144,8 @@ const secondNumber = 3.5
 
 const thirdNumber = 8.9
 
+// console.log(Math.floor(thirdNumber))
+
 /*
   07
 
@@ -105,9 +154,34 @@ const thirdNumber = 8.9
 
 const fourthNumber = 5.5
 
+// console.log(Math.trunc(fourthNumber))
+
 /*
   08
 
   - A cada vez que o index.html for carregado, exiba no console um número  
     aleatório de 0 à 10, incluindo 0 e 10.
 */
+
+// for (let count = 1; count <= 1000; count++) {
+//   const min = 5
+//   const max = 10
+//   const aNumber = Math.round(Math.random() * (max - min)) + min
+
+//   if (aNumber === min) {
+//     console.log('É 5')
+//     break
+//   }
+
+//   if (aNumber === max) {
+//     console.log('É 10')
+//     break
+//   }
+
+//   console.log(aNumber)
+// }
+
+const max = 10
+const aNumber = Math.round(Math.random() * max)
+
+// console.log(aNumber)
