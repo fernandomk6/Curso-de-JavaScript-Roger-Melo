@@ -20,3 +20,41 @@ pelo google dev tools.
 
 ![copy selector](https://i.stack.imgur.com/MoXsN.png)
 
+## Outras maneiras de fazer query no DOM
+
+### Selecionando elemento pelo ID
+
+Sintaxe 
+
+```js
+
+const paragraph = document.getElementById('main-paragraph')
+
+// cont armazena uma referência ao elemento do DOM
+// que tenha o id main-paragraph
+```
+
+### Selecionando elemento pelo nome da classe
+
+Sintaxe 
+
+```js
+
+const errors = document.getElementsByClassName('error')
+
+// errors armazena um HTMLCollection com todos os elementos
+// que tenham a classe error
+```
+
+### Selecionando elemento pelo nome da tag
+
+Sintaxe 
+
+```js
+
+const paragraphs = document.getElementsByTagName('p')
+
+// paragraphs armazena um HTMLCollection com todos os elementos
+// que tenham a tag p
+```
+
