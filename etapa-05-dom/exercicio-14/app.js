@@ -30,7 +30,7 @@ numbers.forEach(insertNumberIntoNumbers)
     - Se o número é par, ele deve ser exibido na cor "lightblue";
     - Se o número é ímpar, exiba-o na cor "pink".
 */
-
+ 
 const liNumbers = document.querySelectorAll('.number')
 const changeLiNumberColor = liNumber => {
   const number = Number(liNumber.innerText)
