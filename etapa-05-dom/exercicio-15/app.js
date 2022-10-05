@@ -9,9 +9,11 @@
 const ul = document.querySelector('.videos')
 const lis = Array.from(ul.children)
 
-lis.forEach(li => {
+const addClassVideo = li => {
   li.classList.add('video')
-})
+}
+
+lis.forEach(addClassVideo)
 
 
 /*
@@ -53,12 +55,15 @@ const previousSiblingUL = ul.previousElementSibling
   - Quando um clique acontecer em alguma das lis, faça com que a li clicada seja  
     exibida no console.
 */
+const logEventTarget = event => {
+  console.log(event.target)
+}
 
-lis.forEach(li => {
-  li.addEventListener('click', event => {
-    console.log(event.target)
-  })
-})
+const addClickLi = li => {
+  li.addEventListener('click', )
+}
+
+lis.forEach(addClickLi)
 
 /*
   06
@@ -80,16 +85,20 @@ const videos = [{
 
 const addVideoButton = document.querySelector('button')
 
-addVideoButton.addEventListener('click', () => {
-  videos.forEach(video => {
-    const li = document.createElement('li')
+const addLiVideo = video => {
+  const li = document.createElement('li')
 
-    li.classList.add('video')
-    li.innerText = video.name
+  li.classList.add('video')
+  li.innerText = video.name
 
-    ul.append(li)
-  })
-})
+  ul.append(li)
+} 
+
+const addVideosOnList = () => {
+  videos.forEach(addLiVideo)
+}
+
+addVideoButton.addEventListener('click', addVideosOnList)
 
 /*
   07
