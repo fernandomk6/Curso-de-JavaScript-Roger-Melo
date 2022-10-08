@@ -6,41 +6,81 @@
 const form = document.querySelector('form')
 const usernameInput = form.username
 
+const insertUsernameFeedbackElement = ({className, textContent}) => {
+  let paragraph = document.querySelector('#username + p')
+  if (!paragraph) paragraph = document.createElement('p')
+
+  paragraph.setAttribute('class', className)
+  paragraph.textContent = textContent
+  usernameInput.insertAdjacentElement('afterend', paragraph)
+}
+
+const insertSubmitFeedbackElement = ({className, textContent}) => {
+  let paragraph = document.querySelector('form button + p')
+  if (!paragraph) paragraph = document.createElement('p')
+
+  const submitButton = form.querySelector('button')
+
+  paragraph.setAttribute('class', className)
+  paragraph.textContent = textContent
+  submitButton.insertAdjacentElement('afterend', paragraph)
+}
+
+const showUsernameFeedback = event => {
+  const username = event.target.value
+
+  const success = {
+    className: 'username-success-feedback',
+    textContent: 'Username válido =)'
+  }
+    
+  const error = {
+    className: 'username-help-feedback',
+    textContent: 'O valor deve conter no mínimo 6 caracteres, com apenas letras maiúsculas e/ou minúsculas'
+  }
+
+  if (isAValidUsername(username)) {
+    insertUsernameFeedbackElement(success)
+    return
+  } 
+
+  insertUsernameFeedbackElement(error)
+}
+
 const isAValidUsername = username => {
   const usernameRegexp = /[a-zA-z]{6,}/
 
   return usernameRegexp.test(username)
 }
 
-const showUsernameFeedback = isAValidUsername => {
-  let feedbackClass = ''
-  let feedbackMessage = ''
+const showSubmitFeedback = event => {
+  event.preventDefault()
+  
+  const username = usernameInput.value
 
-  if (isAValidUsername) {
-    feedbackClass = 'username-success-feedback'
-    feedbackMessage = 'Username válido =)'
-  } else {
-    feedbackClass = 'username-help-feedback'
-    feedbackMessage = 'O valor deve conter no mínimo 6 caracteres, com apenas letras maiúsculas e/ou minúsculas'
+  const success = {
+    className: 'submit-success-feedback',
+    textContent: 'Dados enviados =)'
   }
 
-  const feedback = document.querySelector('#username + p')
-  if (!feedback) feedback = document.createElement('p')
+  const error = {
+    className: 'submit-help-feedback',
+    textContent: 'Por favor, insira um username válido'
+  }
 
-  feedback.setAttribute('class', feedbackClass)
-  feedback.textContent = feedbackMessage
-  usernameInput.insertAdjacentElement('afterend', feedback)
+  let feedbackElement = document.querySelector('button + p')
+  if (!feedbackElement) feedbackElement = document.createElement('p')
 
+  if (isAValidUsername(username)) {
+    insertSubmitFeedbackElement(success)
+    return
+  }
+
+  insertSubmitFeedbackElement(error)
 }
 
-const validateUsername = event => {
-  const username = event.target.value
-  const isValid = isAValidUsername(username)
-
-  showUsernameFeedback(isValid)
-}
-
-usernameInput.addEventListener('keyup', validateUsername)
+form.addEventListener('submit', showSubmitFeedback)
+usernameInput.addEventListener('keyup', showUsernameFeedback)
 
 /*
   01
@@ -89,3 +129,13 @@ usernameInput.addEventListener('keyup', validateUsername)
         6;
     2) Pesquisar no MDN.
 */
+
+const some = (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    const isATruthyValue = callback(array[index], index, array)
+
+    if(isATruthyValue) return true
+  }
+
+  return false
+}
