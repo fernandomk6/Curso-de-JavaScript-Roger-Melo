@@ -4,83 +4,95 @@
 */
 
 const form = document.querySelector('form')
-const usernameInput = form.username
+const pElementUsernameFeedback = document.createElement('p')
+const pElementSubmitFeedback = document.createElement('p')
 
-const insertUsernameFeedbackElement = ({className, textContent}) => {
-  let paragraph = document.querySelector('#username + p')
-  if (!paragraph) paragraph = document.createElement('p')
-
-  paragraph.setAttribute('class', className)
-  paragraph.textContent = textContent
-  usernameInput.insertAdjacentElement('afterend', paragraph)
+const validateUsername = username => {
+  const usernameRegex = /^[a-zA-z]{6,}$/
+  return usernameRegex.test(username)
 }
 
-const insertSubmitFeedbackElement = ({className, textContent}) => {
-  let paragraph = document.querySelector('form button + p')
-  if (!paragraph) paragraph = document.createElement('p')
+const getUsernameFeedbckElement = ({ className, textContent }) => {
+  pElementUsernameFeedback.setAttribute('class', className)
+  pElementUsernameFeedback.textContent = textContent
 
-  const submitButton = form.querySelector('button')
-
-  paragraph.setAttribute('class', className)
-  paragraph.textContent = textContent
-  submitButton.insertAdjacentElement('afterend', paragraph)
+  return pElementUsernameFeedback
 }
 
-const showUsernameFeedback = event => {
-  const username = event.target.value
-
-  const success = {
+const insertIntoDOMUsernameFeedbackElement = isAValidUsername => {
+  const successInfo = {
     className: 'username-success-feedback',
     textContent: 'Username válido =)'
   }
-    
-  const error = {
+  
+  const helpInfo = {
     className: 'username-help-feedback',
     textContent: 'O valor deve conter no mínimo 6 caracteres, com apenas letras maiúsculas e/ou minúsculas'
   }
 
-  if (isAValidUsername(username)) {
-    insertUsernameFeedbackElement(success)
+  if (!isAValidUsername) {
+    const pElement = getUsernameFeedbckElement(helpInfo)
+    form.username.insertAdjacentElement('afterend', pElement)
+    
     return
-  } 
+  }
 
-  insertUsernameFeedbackElement(error)
+  const pElement = getUsernameFeedbckElement(successInfo)
+  form.username.insertAdjacentElement('afterend', pElement)
 }
 
-const isAValidUsername = username => {
-  const usernameRegexp = /[a-zA-z]{6,}/
+const handleUsernameInput = event => {
+  const username = event.target.value
+  const isAValidUsername = validateUsername(username)
+  const emptyInfo = {
+    className: '',
+    textContent: ''
+  }
 
-  return usernameRegexp.test(username)
+  configFeedbackElement(emptyInfo)
+  insertIntoDOMUsernameFeedbackElement(isAValidUsername)
 }
 
-const showSubmitFeedback = event => {
-  event.preventDefault()
-  
-  const username = usernameInput.value
+const configFeedbackElement = ({ className, textContent }) => {
+  pElementSubmitFeedback.setAttribute('class', className)
+  pElementSubmitFeedback.textContent = textContent
 
-  const success = {
+  return pElementSubmitFeedback
+}
+
+const insertIntoDOMSubmitFeedback = isAValidUsername => {
+  const sucessInfo = {
     className: 'submit-success-feedback',
     textContent: 'Dados enviados =)'
   }
 
-  const error = {
+  const helpInfo = {
     className: 'submit-help-feedback',
     textContent: 'Por favor, insira um username válido'
   }
 
-  let feedbackElement = document.querySelector('button + p')
-  if (!feedbackElement) feedbackElement = document.createElement('p')
-
-  if (isAValidUsername(username)) {
-    insertSubmitFeedbackElement(success)
+  if (!isAValidUsername) {
+    const feedbackElement = configFeedbackElement(helpInfo)
+    form.insertAdjacentElement('beforeend', feedbackElement)
     return
   }
 
-  insertSubmitFeedbackElement(error)
+  const feedbackElement = configFeedbackElement(sucessInfo)
+  form.insertAdjacentElement('beforeend', feedbackElement)
+  return
 }
 
-form.addEventListener('submit', showSubmitFeedback)
-usernameInput.addEventListener('keyup', showUsernameFeedback)
+const handleFormSubmit = event => {
+  event.preventDefault()
+  
+  const username = event.target.username.value
+  const isAValidUsername = validateUsername(username)
+
+  insertIntoDOMSubmitFeedback(isAValidUsername)
+}
+
+form.username.addEventListener('input', handleUsernameInput)
+form.addEventListener('submit', handleFormSubmit)
 
 /*
   01
@@ -89,13 +101,14 @@ usernameInput.addEventListener('keyup', showUsernameFeedback)
   - Ele deve conter: 
     - No mínimo 6 caracteres;
     - Apenas letras maiúsculas e/ou minúsculas;
-  - Se o valor inserido não é válido, exiba um parágrafo laranja abaixo do  
-    input com a seguinte mensagem: "O valor deve conter no mínimo 6 caracteres,  
-    com apenas letras maiúsculas e/ou minúsculas";
-  - Se o valor é válido, o parágrafo deve ser verde e exibir a mensagem  
-    "Username válido =)";
-  - Use as classes disponíveis no arquivo style.css para colorir o parágrafo;
-  - Não insira o parágrafo manualmente no index.html.
+  - Se o valor inserido não é válido:
+    - Exiba um parágrafo laranja abaixo do  
+      input com a seguinte mensagem: "O valor deve conter no mínimo 6 caracteres,  
+      com apenas letras maiúsculas e/ou minúsculas";
+    - Se o valor é válido, o parágrafo deve ser verde e exibir a mensagem  
+      "Username válido =)";
+    - Use as classes disponíveis no arquivo style.css para colorir o parágrafo;
+    - Não insira o parágrafo manualmente no index.html.
   
   Dica: pesquise pelo método "insertAdjacentElement", no MDN;
 */
@@ -129,13 +142,3 @@ usernameInput.addEventListener('keyup', showUsernameFeedback)
         6;
     2) Pesquisar no MDN.
 */
-
-const some = (array, callback) => {
-  for (let index = 0; index < array.length; index++) {
-    const isATruthyValue = callback(array[index], index, array)
-
-    if(isATruthyValue) return true
-  }
-
-  return false
-}
