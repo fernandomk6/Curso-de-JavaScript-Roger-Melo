@@ -12,11 +12,40 @@ const validateUsername = username => {
   return usernameRegex.test(username)
 }
 
-const getUsernameFeedbckElement = ({ className, textContent }) => {
+const configSubmitFeedbackElement = ({ className, textContent }) => {
+  pElementSubmitFeedback.setAttribute('class', className)
+  pElementSubmitFeedback.textContent = textContent
+
+  return pElementSubmitFeedback
+}
+
+const configUsernameFeedbckElement = ({ className, textContent }) => {
   pElementUsernameFeedback.setAttribute('class', className)
   pElementUsernameFeedback.textContent = textContent
 
   return pElementUsernameFeedback
+}
+
+const insertIntoDOMSubmitFeedbackElement = isAValidUsername => {
+  const sucessInfo = {
+    className: 'submit-success-feedback',
+    textContent: 'Dados enviados =)'
+  }
+
+  const helpInfo = {
+    className: 'submit-help-feedback',
+    textContent: 'Por favor, insira um username válido'
+  }
+
+  if (!isAValidUsername) {
+    const feedbackElement = configSubmitFeedbackElement(helpInfo)
+    form.insertAdjacentElement('beforeend', feedbackElement)
+    return
+  }
+
+  const feedbackElement = configSubmitFeedbackElement(sucessInfo)
+  form.insertAdjacentElement('beforeend', feedbackElement)
+  return
 }
 
 const insertIntoDOMUsernameFeedbackElement = isAValidUsername => {
@@ -31,13 +60,13 @@ const insertIntoDOMUsernameFeedbackElement = isAValidUsername => {
   }
 
   if (!isAValidUsername) {
-    const pElement = getUsernameFeedbckElement(helpInfo)
+    const pElement = configUsernameFeedbckElement(helpInfo)
     form.username.insertAdjacentElement('afterend', pElement)
     
     return
   }
 
-  const pElement = getUsernameFeedbckElement(successInfo)
+  const pElement = configUsernameFeedbckElement(successInfo)
   form.username.insertAdjacentElement('afterend', pElement)
 }
 
@@ -49,37 +78,8 @@ const handleUsernameInput = event => {
     textContent: ''
   }
 
-  configFeedbackElement(emptyInfo)
+  configSubmitFeedbackElement(emptyInfo)
   insertIntoDOMUsernameFeedbackElement(isAValidUsername)
-}
-
-const configFeedbackElement = ({ className, textContent }) => {
-  pElementSubmitFeedback.setAttribute('class', className)
-  pElementSubmitFeedback.textContent = textContent
-
-  return pElementSubmitFeedback
-}
-
-const insertIntoDOMSubmitFeedback = isAValidUsername => {
-  const sucessInfo = {
-    className: 'submit-success-feedback',
-    textContent: 'Dados enviados =)'
-  }
-
-  const helpInfo = {
-    className: 'submit-help-feedback',
-    textContent: 'Por favor, insira um username válido'
-  }
-
-  if (!isAValidUsername) {
-    const feedbackElement = configFeedbackElement(helpInfo)
-    form.insertAdjacentElement('beforeend', feedbackElement)
-    return
-  }
-
-  const feedbackElement = configFeedbackElement(sucessInfo)
-  form.insertAdjacentElement('beforeend', feedbackElement)
-  return
 }
 
 const handleFormSubmit = event => {
@@ -88,7 +88,7 @@ const handleFormSubmit = event => {
   const username = event.target.username.value
   const isAValidUsername = validateUsername(username)
 
-  insertIntoDOMSubmitFeedback(isAValidUsername)
+  insertIntoDOMSubmitFeedbackElement(isAValidUsername)
 }
 
 form.username.addEventListener('input', handleUsernameInput)
