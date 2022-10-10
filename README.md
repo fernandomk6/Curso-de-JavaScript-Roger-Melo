@@ -31,6 +31,7 @@ Fazer exercicios com sequencia gradativa de dificuldade.
 
 Revisar periódicamente o que foi estudado.
 Antes de começar a proxima aula revise as aulas anteriores.
+
 **Use como base as anotações de sua leitura em savoring**.
 
 Repita esse processo para otimizar 
