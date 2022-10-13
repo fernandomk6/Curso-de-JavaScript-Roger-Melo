@@ -56,10 +56,10 @@ const cart = [
   { name: 'Death Stranding', price: 149.99 }
 ]
 
-const logCarsName = cart.reduce((accumulator, game) => 
-  accumulator += `- ${game.name} \n`, '')
+const productsList = cart.reduce((accumulator, product) => 
+  `${accumulator}- ${product.name} \n`, '')
 
-// console.log(logCarsName)
+// console.log(productsList)
 
 /*
   - Nome 1
