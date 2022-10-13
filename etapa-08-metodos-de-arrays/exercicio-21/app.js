@@ -23,7 +23,7 @@ const numberOfCrazyNumbers = crazyNumbers.reduce((accumulator, number) => {
   return accumulator
 }, 0)
 
-// console.log(numberOfCrazyNumbers)
+// console.log(numberOfCrazyNumbers) 
 
 /*
   03
