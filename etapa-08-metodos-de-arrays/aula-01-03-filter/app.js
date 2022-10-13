@@ -9,7 +9,9 @@ const users = [
   { name: 'Margaret Hamilton', premium: true }
 ]
 
-const premiumUsers = users.filter(user => user.premium)
+const premiumUsers = users
+  .filter(user => user.premium)
+  .map(premiumUser => ({ ...premiumUser }))
 
-users[0].name = 'ticaracatica'
-console.log({ users, premiumUsers })
+
+console.log(users[0] === premiumUsers[0]) // false
