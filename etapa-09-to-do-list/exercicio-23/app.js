@@ -28,7 +28,7 @@ const people = [
 
 const peopleOrderedByScore = people
   .map(({ firstName, lastName, score }) => ({ firstName, lastName, score }))
-  .sort((people, otherPeople) => people.score - otherPeople.score)
+  .sort((a, b) => a.score - b.score)
 
 
 // console.log(peopleOrderedByScore)
@@ -44,7 +44,7 @@ const peopleOrderedByScore = people
 */
 
 const animals = ['cão', 'gato', 'boi', 'leão', 'gnu', 'alce', 'ema']
-const animaisWith3Letters = animals.filter(animal => animal.length === 3)
+const animaisWith3Letters = animals.filter(({ length }) => length === 3)
 
 /*
   04
@@ -53,7 +53,7 @@ const animaisWith3Letters = animals.filter(animal => animal.length === 3)
     nome de cada animal. Ex.: [6, 8, 2].
 */
 
-const eachAnimalsLettersNumber = animals.map(animal => animal.length)
+const eachAnimalsLettersNumber = animals.map(({ length }) => length)
 
 /*
   05
@@ -88,8 +88,7 @@ const isOddNumber = number => number % 2 === 1
 
 const sumOfOddNumbers = numbers
   .filter(number => isOddNumber(number))
-  .reduce((accumulator, oddNumber) => 
-    accumulator += oddNumber, 0)
+  .reduce((accumulator, oddNumber) => accumulator + oddNumber, 0)
 
 /*
   07
@@ -115,5 +114,4 @@ const data = [{
 const chinaContry = 'China'
 const populationExeptChina = data
   .filter(({ country }) => country !== chinaContry)
-  .reduce((accumulator, { population }) => 
-    accumulator += population, 0)
+  .reduce((accumulator, { population }) => accumulator + population, 0)
