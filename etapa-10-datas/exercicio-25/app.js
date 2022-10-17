@@ -49,7 +49,7 @@ const year = present.getFullYear()
   - Exiba o objeto no console.
 */
 
-const myBrithday = new Date(1998, 7, 21)
+const myBrithday = new Date('august 21 1998 14:25:22')
 console.log('myBirthday', myBrithday)
 
 /*
@@ -78,7 +78,7 @@ console.log('tomorrow', tomorrow)
   - Exiba no console a quantidade de dias entre o momento futuro e o passado.
 */
 
-const difference = tomorrow.getTime() - present.getTime()
+const difference =  tomorrow.getTime() - present.getTime()
 const differenceDays = difference / 1000 / 60 / 60 / 24
 
 console.log(differenceDays)
