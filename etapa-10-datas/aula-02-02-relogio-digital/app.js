@@ -13,9 +13,9 @@ const updateClock = () => {
   const formatedSeconds = formatTwoDigits(seconds)
 
   const clockHTML = `
-    <span>${formatedHours}h</span>
-    <span>${formatedMinutes}m</span>
-    <span>${formatedSeconds}s</span>
+    <span>${formatedHours}</span> :
+    <span>${formatedMinutes}</span> :
+    <span>${formatedSeconds}</span>
   `
 
   clockContainer.innerHTML = clockHTML
