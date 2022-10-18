@@ -5,14 +5,14 @@
     formatação "DD/MM/AAAA". Exemplo: 03/07/2021;
   - Não utilize a date-fns.
 */
-const twoDigits = digit => digit < 10 ? `0${digit}` : `${digit}`
+const to2Digits = digit => digit < 10 ? `0${digit}` : `${digit}`
 
 const getFormatedDate = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
 
-  return `${twoDigits(day)}/${twoDigits(month)}/${year}`
+  return `${to2Digits(day)}/${to2Digits(month)}/${year}`
 }
 
 // console.log(getFormatedDate(new Date('august 21 1998 14:15:22')))
@@ -25,43 +25,40 @@ const getFormatedDate = date => {
   - Não utilize a date-fns.
 */
 
+const months = [
+  'janeiro', 
+  'fevereiro',
+  'março',
+  'abril',
+  'maio',
+  'junho',
+  'julho',
+  'agosto',
+  'setembro',
+  'outubro',
+  'novembro',
+  'dezembro'
+]
+
+const weekDays = [
+  'domingo', 
+  'segunda', 
+  'terça', 
+  'quarta', 
+  'quinta', 
+  'sexta', 
+  'sabádo', 
+  'domingo'
+]
 const getDateExtended = date => {
-  const months = [
-    'janeiro', 
-    'fevereiro',
-    'março',
-    'abril',
-    'maio',
-    'junho',
-    'julho',
-    'agosto',
-    'setembro',
-    'outubro',
-    'novembro',
-    'dezembro'
-  ]
-
-  const days = [
-    'domingo', 
-    'segunda', 
-    'terça', 
-    'quarta', 
-    'quinta', 
-    'sexta', 
-    'sabádo', 
-    'domingo'
-  ]
-
-  const hour = twoDigits(date.getHours())
-  const minutes = twoDigits(date.getMinutes())
-  const day = days[date.getDay()]
-  const dates = date.getDate()
+  const hour = to2Digits(date.getHours())
+  const minutes = to2Digits(date.getMinutes())
+  const weekDay = weekDays[date.getDay()]
+  const monthDay = date.getDate()
   const month = months[date.getMonth()]
   const year = date.getFullYear()
 
-  const message = `${hour}:${minutes} - ${day}, ${dates} de ${month} de ${year}`
-
-  return message
+  return`${hour}:${minutes} - ${weekDay}, ${monthDay} de ${month} de ${year}`
 }
 
 console.log(getDateExtended(new Date()))
@@ -121,15 +118,10 @@ console.log(abc)
 const useDataSomewhereElse = data => console.log(data)
 
 
-const updateSomething = (data = {}) => {
-  const { target, property } = data
-  const willChange = data.willChange === 'valor indesejado' ? 'valor desejado' : data.willChange
+const updateSomething = ({ target, property, willChange } = {}) => {
+  willChange = willChange === 'valor indesejado' ? 'valor desejado' : willChange
 
-  useDataSomewhereElse({
-    target,
-    property,
-    willChange
-  })
+  useDataSomewhereElse({ target, property, willChange })
 }
 
 updateSomething({ target: '1', property: '2', willChange: 'valor indesejado' })
