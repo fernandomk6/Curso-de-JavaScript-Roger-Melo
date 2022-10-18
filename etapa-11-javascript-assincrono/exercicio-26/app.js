@@ -5,18 +5,17 @@
     formatação "DD/MM/AAAA". Exemplo: 03/07/2021;
   - Não utilize a date-fns.
 */
+const twoDigits = digit => digit < 10 ? `0${digit}` : `${digit}`
 
 const getFormatedDate = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
 
-  const twoDigits = digit => digit < 10 ? `0${digit}` : `${digit}`
-
   return `${twoDigits(day)}/${twoDigits(month)}/${year}`
 }
 
-console.log(getFormatedDate(new Date('august 21 1998 14:15:22')))
+// console.log(getFormatedDate(new Date('august 21 1998 14:15:22')))
 
 /*
   02
@@ -25,6 +24,47 @@ console.log(getFormatedDate(new Date('august 21 1998 14:15:22')))
     data na formatação: "03:07 - domingo, 7 de junho de 2020";
   - Não utilize a date-fns.
 */
+
+const getDateExtended = date => {
+  const months = [
+    'janeiro', 
+    'fevereiro',
+    'março',
+    'abril',
+    'maio',
+    'junho',
+    'julho',
+    'agosto',
+    'setembro',
+    'outubro',
+    'novembro',
+    'dezembro'
+  ]
+
+  const days = [
+    'domingo', 
+    'segunda', 
+    'terça', 
+    'quarta', 
+    'quinta', 
+    'sexta', 
+    'sabádo', 
+    'domingo'
+  ]
+
+  const hour = twoDigits(date.getHours())
+  const minutes = twoDigits(date.getMinutes())
+  const day = days[date.getDay()]
+  const dates = date.getDate()
+  const month = months[date.getMonth()]
+  const year = date.getFullYear()
+
+  const message = `${hour}:${minutes} - ${day}, ${dates} de ${month} de ${year}`
+
+  return message
+}
+
+console.log(getDateExtended(new Date()))
 
 /*
   03
@@ -35,6 +75,9 @@ console.log(getFormatedDate(new Date('august 21 1998 14:15:22')))
 */
 
 const user = { id: 42, isVerified: true }
+const { id, isVerified } = user
+
+console.log(id, isVerified)
 
 /*
   04
@@ -49,6 +92,10 @@ const user = { id: 42, isVerified: true }
 const robotA = { name: 'Bender' }
 const robotB = { name: 'HAL 9000' }
 
+const { name: nameA } = robotA
+const { name: nameB } = robotB
+
+console.log(nameA, nameB)
 /*
   05
 
@@ -62,29 +109,26 @@ const a = 'a'
 const b = 'b'
 const c = 'c'
 
+const abc = { a, b, c }
+console.log(abc)
+
 /*
   06
 
   - Refatore o código abaixo.
 */
 
-const useDataSomewhereElse = value => {
-  console.log(value)
-}
+const useDataSomewhereElse = data => console.log(data)
+
 
 const updateSomething = (data = {}) => {
-  const target = data.target
-  const property = data.property
-  let willChange = data.willChange
-
-  if (willChange === 'valor indesejado') {
-    willChange = 'valor desejado'
-  }
+  const { target, property } = data
+  const willChange = data.willChange === 'valor indesejado' ? 'valor desejado' : data.willChange
 
   useDataSomewhereElse({
-    target: target,
-    property: property,
-    willChange: willChange
+    target,
+    property,
+    willChange
   })
 }
 
@@ -100,18 +144,14 @@ updateSomething({ target: '1', property: '2', willChange: 'valor indesejado' })
 const clockContainer = document.querySelector('.clock-container')
 
 const updateClock = () => {
-  const present = new Date()
-  const hours = present.getHours()
-  const minutes = present.getMinutes()
-  const seconds = present.getSeconds()
-
-  const clockHTML = `
-    <span>${String(hours).length === 1 ? `0${hours}` : hours}</span> :
-    <span>${String(minutes).length === 1 ? `0${minutes}` : minutes}</span> :
-    <span>${String(seconds).length === 1 ? `0${seconds}` : seconds}</span>
-  `
-
-  clockContainer.innerHTML = clockHTML
+  clockContainer.innerHTML = new Date()
+    .toLocaleString()
+    .slice(11)
+    .split(':')
+    .reduce((accumulator, data, index, array) => 
+      array.length === index + 1 ? 
+        accumulator + `<span>${data}</span>` : 
+        accumulator + `<span>${data}</span> : `, '')
 }
 
 setInterval(updateClock, 1000)
