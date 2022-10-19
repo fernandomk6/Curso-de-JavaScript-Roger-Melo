@@ -54,7 +54,8 @@ console.log(lesserThanFive)
 */
 
 const prices = [12, 19, 7, 209]
-const totalPrice = prices.reduce((acc, price) => acc + price, 0)
+const sumPrices = (acc, price) => acc + price
+const totalPrice = prices.reduce(sumPrices, 0)
 
 console.log(`Preço total: ${totalPrice}`)
 
@@ -83,8 +84,13 @@ console.log(car)
     invocada com 3 argumentos'.
 */
 
-const y = (a, b, c) => 
-  a && b && c ? 'A função foi invocada com 3 argumentos' : 'A função deve ser invocada com 3 argumentos'
+const haveThreeArguments = (parameter1, parameter2, parameter3) => {
+  const isSomeParameterUndefined = [parameter1, parameter2, parameter3].includes(undefined)
+  return isSomeParameterUndefined
+    ? 'A função deve ser invocada com 3 argumentos'
+    : 'A função foi invocada com 3 argumentos'
+}
+
 
 /*
   07
@@ -110,21 +116,23 @@ const y = (a, b, c) =>
 
 let booksBox = {
   spaces: 5,
-  booksIn: 0
+  booksIn: 0,
+  add (number) {
+    const boxIsFull = this.spaces === 0
+    const isThereEnoughSpace = number > this.spaces
+
+    if (boxIsFull) {
+      return console.log('A caixa já está cheia')
+    }
+  
+    if (isThereEnoughSpace) {
+      return console.log(`Só cabem mais ${ this.spaces} ${this.spaces === 1 ? 'livro' : 'livros'}`)
+    }
+  
+    this.booksIn += number
+    this.spaces -= number
+  
+    return console.log(`já tem ${this.booksIn} livros na caixa`)
+  }
 }
 
-const addBookToBox = (booksNumber) => {
-  if (booksBox.spaces === 0) {
-    return 'A caixa já está cheia'
-  }
-
-  if (booksNumber > booksBox.spaces) {
-    return `Só cabem mais ${booksBox.spaces} livros`
-  }
-
-  booksBox.spaces = booksBox.spaces - booksNumber
-
-  booksBox.booksIn = 5 - booksBox.spaces
-
-  return `Já há ${booksBox.booksIn} livros na caixa` 
-}
