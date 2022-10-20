@@ -4,20 +4,20 @@
   - Implemente um código assíncrono entre os console.log() abaixo.
 */
 
-console.log('Linha 1')
-console.log('Linha 2')
-console.log('Linha 3')
-console.log('Linha 4')
+// console.log('Linha 1')
+// console.log('Linha 2')
+// console.log('Linha 3')
+// console.log('Linha 4')
 
-setTimeout(() =>{
-  console.log('código assíncrono')
-}, 1000)
+// setTimeout(() =>{
+//   console.log('código assíncrono')
+// }, 1000)
 
 
-console.log('Linha 5')
-console.log('Linha 6')
-console.log('Linha 7')
-console.log('Linha 8')
+// console.log('Linha 5')
+// console.log('Linha 6')
+// console.log('Linha 7')
+// console.log('Linha 8')
 
 /*
   02
@@ -26,13 +26,13 @@ console.log('Linha 8')
     "logGreeting" ser exibida no console.
 */
 
-const x = callback => callback('marreco')
+// const x = callback => callback('marreco')
 
-function logGreeting (name) {
-  console.log(`olá, ${name}`)
-}
+// function logGreeting (name) {
+//   console.log(`olá, ${name}`)
+// }
 
-x(logGreeting)
+// x(logGreeting)
 
 /*
   03
@@ -45,7 +45,7 @@ const isLasserThanFive = num => num < 5
 const numbers = [3, 4, 10, 20]
 const lesserThanFive = numbers.filter(isLasserThanFive)
 
-console.log(lesserThanFive)
+// console.log(lesserThanFive)
 
 /*
   04
@@ -57,7 +57,7 @@ const prices = [12, 19, 7, 209]
 const sumPrices = (acc, price) => acc + price
 const totalPrice = prices.reduce(sumPrices, 0)
 
-console.log(`Preço total: ${totalPrice}`)
+// console.log(`Preço total: ${totalPrice}`)
 
 /*
   05
@@ -72,7 +72,7 @@ const changeCarColor = (car, color) => car.color = color
 
 changeCarColor(car, 'blue')
 
-console.log(car)
+// console.log(car)
 
 /*
   06
@@ -114,25 +114,41 @@ const haveThreeArguments = (parameter1, parameter2, parameter3) => {
       na frase acima.
 */
 
-let booksBox = {
+const getPluralOrSingular = (quantity, plural, singular) => quantity > 1 ? plural : singular
+
+
+const booksBox = {
   spaces: 5,
   booksIn: 0,
-  add (number) {
-    const boxIsFull = this.spaces === 0
-    const isThereEnoughSpace = number > this.spaces
 
-    if (boxIsFull) {
-      return console.log('A caixa já está cheia')
-    }
-  
-    if (isThereEnoughSpace) {
-      return console.log(`Só cabem mais ${ this.spaces} ${this.spaces === 1 ? 'livro' : 'livros'}`)
-    }
-  
-    this.booksIn += number
-    this.spaces -= number
-  
-    return console.log(`já tem ${this.booksIn} livros na caixa`)
+  add (quantity) {
+    const isNoSpaces = this.booksIn === this.spaces
+    const availableSpaces = this.spaces - this.booksIn
+    const isInsufficientSpaces = quantity > availableSpaces
+
+    if (isNoSpaces) return this.getNoSpacesMessage()
+    if (isInsufficientSpaces) return this.getAvailableSpacesMessage(availableSpaces)
+      
+    this.booksIn += quantity
+    return this.getBooksInMessage()
+  },
+
+  getNoSpacesMessage () {
+    return 'A caixa já está cheia'
+  },
+
+  getAvailableSpacesMessage (availableSpaces) {
+    const fitPluralOrSingular = getPluralOrSingular(availableSpaces, 'cabem', 'cabe')
+    const bookPluralOrSingular = getPluralOrSingular(availableSpaces, 'livros', 'livro')
+
+    return `Só ${fitPluralOrSingular} mais ${availableSpaces} ${bookPluralOrSingular}`
+  },
+
+  getBooksInMessage() {
+    const bookPluralOrSingular = getPluralOrSingular(this.booksIn, 'livros', 'livro')
+
+    return `Já há '${this.booksIn}' ${bookPluralOrSingular} na caixa`
   }
 }
+
 
