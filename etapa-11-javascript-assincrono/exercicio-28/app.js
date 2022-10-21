@@ -16,6 +16,28 @@
   - Teste também a verificação do item acima.
 */
 
+const request = new XMLHttpRequest()
+const URLPikachu = 'https://pokeapi.co/api/v2/pokemon/pikachu'
+
+request.addEventListener('readystatechange', () => {
+  const isOperationCompleted = request.readyState === 4
+  const isStatusSuccess = request.status === 200
+  const isSuccessfullyResponse = isOperationCompleted && isStatusSuccess
+  const isFailedResponse = isOperationCompleted && !isStatusSuccess
+
+  if (isSuccessfullyResponse) {
+    console.log(request.response)
+  }
+
+  if (isFailedResponse) {
+    console.log('Não foi possível obter os dados do pokémon')
+  }
+})
+
+request.open('GET', URLPikachu)
+// request.send()
+
+
 /*
   02
 
@@ -31,6 +53,17 @@
     - Quantos metros você caminhou (number iniciado em 0).
 */
 
+const human = {
+  firstName: 'Fernando Henrique',
+  lastName: 'Pontes Pereira',
+  sex: 'male',
+  age: 23,
+  height: 1.70,
+  weight: 90,
+  isWalking: false,
+  metersWalked: 0
+}
+
 /*
   03
 
@@ -39,6 +72,10 @@
   - A cada vez que o método é invocado, 1 deve ser somado à idade atual;
   - Após criar o método, adicione 5 anos à idade do objeto.
 */
+
+human.incrementAge = function () {
+  this.age++
+}
 
 /*
   04
@@ -50,6 +87,15 @@
   - Após criar o método, faça a pessoa caminhar alguns metros, invocando o 
     método 4x, com diferentes metragens passadas por parâmetro.
 */
+
+human.walk = function (meters) {
+  if (!meters) {
+    return
+  }
+
+  this.isWalking = true
+  this.metersWalked += meters
+}
 
 /*
   05
@@ -68,6 +114,39 @@
       "metro", no singular.
 */
 
+const getPlural = (quantity, plural, singular) => quantity === 1 ? singular : plural
+const getOOrA = sex => sex === 'male' ? 'o' : 'a'
+const getFullName = (firstName, lastName) => `${firstName} ${lastName}`
+const getNameMessage = (oOrA, fullName) => `Oi. Eu sou ${oOrA} ${fullName}`
+const getAgeMessage = (age, yearsPluralOrSingular) => `tenho ${age} ${yearsPluralOrSingular}`
+const getHeightMessage = height => `${height} metros de altura`
+const getWeightMessage = weight => `peso ${weight} quilos`
+
+const getWalkMessage = metersWalked => {
+  const metersPluralOrSingular = getPlural(metersWalked, 'metros', 'metro') 
+
+  return metersWalked === 0 
+    ? `ainda não caminhei hoje`
+    : `só hoje, eu já caminhei ${metersWalked} ${metersPluralOrSingular}`
+}
+
+human.getInfo = function () {
+  const { firstName, lastName, age, sex, height, weight, metersWalked } = this
+
+  const fullName = getFullName(firstName, lastName)
+  const oOrA = getOOrA(sex)
+  const yearsPluralOrSingular = getPlural(age, 'anos', 'ano')
+
+  const nameMessage = getNameMessage(oOrA, fullName)
+  const ageMessage = getAgeMessage(age, yearsPluralOrSingular)
+  const heightMessage = getHeightMessage(height)
+  const weightMessage = getWeightMessage(weight)
+  const walkMessage = getWalkMessage(metersWalked)
+
+  const info = `${nameMessage}, ${ageMessage}, ${heightMessage}, ${weightMessage} e, ${walkMessage}.`
+  return info
+}
+
 /*
   06
 
@@ -79,6 +158,16 @@
     valor truthy;
     - Faça isso até que 7 valores truthy sejam passados.
 */
+
+const getBoolean = value => Boolean(value)
+
+// console.log(getBoolean(true))
+// console.log(getBoolean({}))
+// console.log(getBoolean(() => {}))
+// console.log(getBoolean(1))
+// console.log(getBoolean('a'))
+// console.log(getBoolean([]))
+
 
 /*
   07
@@ -98,3 +187,35 @@
 
   Dica: propriedades de objetos podem ser declaradas como strings.
 */
+
+const getBookInfo = bookName => {
+  const bookNameLower = bookName ? bookName.toLowerCase() : null
+
+  const booksOptions = {
+    'sappiens': {
+      name: 'Sapiens',
+      author: 'Yuval Harari',
+      publishingCompany: 'L&PM',
+      pagesNumber: 459
+    },
+  
+    'o universo numa casca de noz': {
+      name: 'O Universo numa Casca de Noz',
+      author: 'Stephen William Hawking',
+      publishingCompany: 'Bantam Spectra',
+      pagesNumber: 224
+    },
+  
+    'uma breve história do tempo': {
+      name: 'Uma Breve História do Tempo',
+      author: 'Stephen William Hawking',
+      publishingCompany: 'Intrínseca',
+      pagesNumber: 256
+    }
+  }
+
+  return  booksOptions[bookNameLower] || booksOptions
+}
+
+const myBookInfo = getBookInfo()
+console.log(myBookInfo)
