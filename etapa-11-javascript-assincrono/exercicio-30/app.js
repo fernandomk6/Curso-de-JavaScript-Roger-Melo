@@ -31,9 +31,9 @@ const getUsers = () => {
   })
 }
 
-getUsers()
-  .then(users => console.log(users))
-  .catch(error => console.log(error))
+// getUsers()
+//   .then(users => console.log(users))
+//   .catch(error => console.log(error))
 
 /*
   02
@@ -58,7 +58,7 @@ const calculator = operator => ({
   }[operator] || (() => 'operação inválida'))
 
 const sum = calculator('+')
-console.log(sum(1, 3))
+// console.log(sum(1, 3))
 
 /*
   03
@@ -73,6 +73,26 @@ console.log(sum(1, 3))
   - Crie um novo array chamado `newSul`, que recebe somente os estados do sul,
     pegando do array `brasil`. Não remova esses itens de `brasil`.
 */
+
+const sul = [ 'Paraná', 'Santa Catarina', 'Rio Grande do Sul' ]
+const sudeste = [ 'Espirito Santo', 'Minas Gerais', 'Rio de Janeiro', 'São Paulo' ]
+const norte = [ 'Amazonas', 'Pará', 'Acre', 'Roraima', 'Rondônia', 'Amapá', 'Tocantins' ]
+
+const brasil = sul.concat(sudeste)
+
+norte.forEach(estado => {
+  brasil.unshift(estado)
+})
+
+// console.log({sul, norte, sudeste, brasil})
+// console.log(brasil.shift())
+// console.log({sul, norte, sudeste, brasil})
+
+const newSul = brasil.filter(estadoDoBrasil => 
+  sul.some(estadoDoSul => estadoDoSul === estadoDoBrasil))
+
+// console.log(newSul, sul, brasil)
+
 
 /*
   04
@@ -93,6 +113,27 @@ console.log(sum(1, 3))
     every.
 */
 
+const nordeste = [ 'Maranhão', 'Piauí', 'Ceará', 'Rio Grande do Norte', 'Paraíba', 'Pernambuco', 'Alagoas', 'Sergipe', 'Bahia' ]
+const newSudeste = brasil.splice(10, 4)
+
+nordeste.forEach(estadoDoNordeste => {
+  brasil.push(estadoDoNordeste)
+})
+
+const newBrasil = brasil.map((estado, index) => {
+  return {
+    id: index,
+    estado
+  }
+})
+
+const temMaisDe7Letras = brasil.every(estado => estado.length > 7)
+const message = temMaisDe7Letras 
+  ? 'Sim, todos os estados tem mais de 7 letras.'
+  : 'Nem todos os estados tem mais de 7 letras.'
+
+// console.log(message)
+
 /*
   05
 
@@ -106,3 +147,18 @@ console.log(sum(1, 3))
   - Filtre o array criado acima, retornando somente os estados que tiverem ID 
     par. Atribua este novo array à uma constante.
 */
+
+const cearaExiste = brasil.includes('Ceará')
+
+if (cearaExiste) {
+  console.log('Ceará está incluído.')
+} else {
+  console.log('Ceará não foi incluído =/')
+}
+
+const finalBrasil = newBrasil.map(({ id, estado }) => ({
+  id: ++id,
+  estado: `${estado} pertence ao Brasil.`
+}))
+
+console.log(finalBrasil)
