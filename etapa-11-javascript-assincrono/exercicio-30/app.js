@@ -49,13 +49,25 @@ const getUsers = () => {
   - Se o operador não for válido, retorne a mensagem "Operação inválida."
 */
 
-const calculator = operator => ({
-    '+': (x, y) => x + y,
-    '-': (x, y) => x - y,
-    '*': (x, y) => x * y,
-    '/': (x, y) => x / y,
-    '%': (x, y) => x % y
-  }[operator] || (() => 'operação inválida'))
+const calculator = operator => {
+  const sum = (operator1, operator2) => operator1 + operator2
+  const subtraction = (operator1, operator2) => operator1 - operator2
+  const multiplication = (operator1, operator2) => operator1 * operator2
+  const division = (operator1, operator2) => operator1 / operator2
+  const module = (operator1, operator2) => operator1 % operator2
+  const invalid = () => 'operação inválida'
+
+  const operations = { 
+    '+': sum,
+    '-': subtraction,
+    '*': multiplication,
+    '/': division,
+    '%': module,
+    'invalid': invalid
+  }
+
+  return operations[operator] || operations.invalid
+}
 
 const sum = calculator('+')
 // console.log(sum(1, 3))
@@ -79,19 +91,22 @@ const sudeste = [ 'Espirito Santo', 'Minas Gerais', 'Rio de Janeiro', 'São Paul
 const norte = [ 'Amazonas', 'Pará', 'Acre', 'Roraima', 'Rondônia', 'Amapá', 'Tocantins' ]
 
 const brasil = sul.concat(sudeste)
-
-norte.forEach(estado => {
+const adicionarEstadoAoBrasil = estado => {
   brasil.unshift(estado)
-})
+}
+
+norte.forEach(adicionarEstadoAoBrasil)
 
 // console.log({sul, norte, sudeste, brasil})
 // console.log(brasil.shift())
 // console.log({sul, norte, sudeste, brasil})
 
-const newSul = brasil.filter(estadoDoBrasil => 
-  sul.some(estadoDoSul => estadoDoSul === estadoDoBrasil))
+const getEstadoDoSul = estadoDoBrasil => 
+  sul.some(estadoDoSul => estadoDoSul === estadoDoBrasil)
 
-// console.log(newSul, sul, brasil)
+const newSul = brasil.filter(getEstadoDoSul)
+
+console.log(newSul, sul, brasil)
 
 
 /*
@@ -116,9 +131,7 @@ const newSul = brasil.filter(estadoDoBrasil =>
 const nordeste = [ 'Maranhão', 'Piauí', 'Ceará', 'Rio Grande do Norte', 'Paraíba', 'Pernambuco', 'Alagoas', 'Sergipe', 'Bahia' ]
 const newSudeste = brasil.splice(10, 4)
 
-nordeste.forEach(estadoDoNordeste => {
-  brasil.push(estadoDoNordeste)
-})
+nordeste.forEach(adicionarEstadoAoBrasil)
 
 const newBrasil = brasil.map((estado, index) => {
   return {
@@ -132,7 +145,6 @@ const message = temMaisDe7Letras
   ? 'Sim, todos os estados tem mais de 7 letras.'
   : 'Nem todos os estados tem mais de 7 letras.'
 
-// console.log(message)
 
 /*
   05
@@ -156,9 +168,11 @@ if (cearaExiste) {
   console.log('Ceará não foi incluído =/')
 }
 
-const finalBrasil = newBrasil.map(({ id, estado }) => ({
+const getFinalEstado = ({ id, estado }) => ({
   id: ++id,
   estado: `${estado} pertence ao Brasil.`
-}))
+})
+
+const finalBrasil = newBrasil.map(getFinalEstado)
 
 console.log(finalBrasil)
