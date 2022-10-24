@@ -8,6 +8,33 @@
     dados dos usuários."
 */
 
+const getUsers = () => {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest()
+    const URL = 'https://jsonplaceholder.typicode.com/users'
+
+    request.addEventListener('readystatechange', () => {
+      const isResposeOK = request.readyState === 4 && request.status === 200
+      const isResposeNotOK = request.readyState === 4 && request.status !== 200
+
+      if (isResposeOK) {
+        resolve(JSON.parse(request.responseText))
+      }
+
+      if (isResposeNotOK) {
+        reject('Não foi possível obter os dados dos usuários')
+      }
+    })
+
+    request.open('GET', URL)
+    request.send()
+  })
+}
+
+getUsers()
+  .then(users => console.log(users))
+  .catch(error => console.log(error))
+
 /*
   02
 
@@ -21,6 +48,17 @@
     mensagem: "Resultado da operação: NUMERO_1 OPERADOR NUMERO_2 = RESULTADO."
   - Se o operador não for válido, retorne a mensagem "Operação inválida."
 */
+
+const calculator = operator => ({
+    '+': (x, y) => x + y,
+    '-': (x, y) => x - y,
+    '*': (x, y) => x * y,
+    '/': (x, y) => x / y,
+    '%': (x, y) => x % y
+  }[operator] || (() => 'operação inválida'))
+
+const sum = calculator('+')
+console.log(sum(1, 3))
 
 /*
   03
