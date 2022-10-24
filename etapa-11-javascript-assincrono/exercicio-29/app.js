@@ -194,19 +194,17 @@ const people = [
   { id: 73, name: 'Aline', age: 19, federativeUnit: 'Brasília' }
 ]
 
-const ageFrequency = people.reduce((accumulator, person) => {
-  if (accumulator[person.age]) {
-    return {
-      ...accumulator,
-      [person.age]: ++accumulator[person.age]
-    }
-  }
+const countAges = (accumulator, { age }) => {
+  if (accumulator[age]) {
+    accumulator[age]++
+    return accumulator
+  } 
 
-  return {
-    ...accumulator,
-    [person.age]: 1
-  }
+  accumulator[age] = 1
+  return accumulator
+}
 
-}, {})
+const ageFrequency = people.reduce(countAges, {})
 
 console.log(ageFrequency)
+
