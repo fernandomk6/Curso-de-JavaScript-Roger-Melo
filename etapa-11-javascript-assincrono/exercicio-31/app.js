@@ -22,7 +22,7 @@ const getUser = async username => {
 }
 
 const user = getUser('fernandomk6')
-// logUser(user)
+logUser(user)
 
 // const getGitHubUser = (username) => {
 //   const URL = `https://api.github.com/users/${username}`
@@ -51,6 +51,11 @@ const user = getUser('fernandomk6')
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
+const isDivisibleBy2Or3 = number => number % 2 === 0 || number % 3 === 0
+const divisibleBy2Or3 = numbers.filter(isDivisibleBy2Or3)
+
+console.log(divisibleBy2Or3)
+
 /*
   03
 
@@ -64,6 +69,17 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     - Natália => "PNaPtáPlia";
     - Rafaela => "PRaPfaPePla".
 */
+
+const syllablesOfMyName = ['fer', 'nan', 'do']
+
+const encryptDataReducer = (accumulator, syllable) => 
+  `${accumulator}P${syllable}`
+
+const encryptPLanguage = syllables => 
+  syllables.reduce(encryptDataReducer, '')
+
+const myNameInPLanguage = encryptPLanguage(syllablesOfMyName)
+console.log(myNameInPLanguage)
 
 /*
   04
@@ -80,6 +96,14 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   Dica: pesquise pelo método split.
 */
 
+const myName = 'Fernando'
+const myNameLetters = myName.split('')
+
+const logLetterAndPosition = (letter, index) => 
+  console.log(`"${letter}" é a ${++index}ª letra do meu nome.`)
+
+myNameLetters.forEach(logLetterAndPosition)
+
 /*
   05
 
@@ -92,6 +116,17 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
   Dica: pesquise pelo método Object.keys().
 */
+
+const person = {
+  name: 'fernando',
+  lastname: 'pereira',
+  age: 23
+}
+
+console.log(Object.keys(person).reduce((accumulator, key) => {
+  accumulator.push(`key: ${key}, value: ${person[key]}`)
+  return accumulator
+}, []))
 
 /*
   06
@@ -107,6 +142,16 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 */
 
 const scores = [100, 90, 85, 100, 60, 85, 100, 90, 55, 75, 60]
+
+const getOccurrences = (array, valueToBeFound) => 
+  array.reduce((accumulator, value) => 
+    valueToBeFound === value 
+      ? ++accumulator 
+      : accumulator
+  , 0)
+
+const occurrences = getOccurrences(scores, 85)
+console.log(occurrences)
 
 /*
   07
@@ -131,3 +176,21 @@ const scores = [100, 90, 85, 100, 60, 85, 100, 90, 55, 75, 60]
   Dica: lembre-se que o método filter inclui o item em questão no novo array 
   que está sendo gerado **apenas** se a função retorna um valor truthy.
 */
+
+const filter = (array, callback) => {
+  const newArray = []
+
+  for (let index = 0; index < array.length; index++) {
+    const item = array[index]
+    const wasFiltered = callback(item, index, array)
+
+    if (!wasFiltered) {
+      continue
+    }
+
+    newArray.push(item)
+  }
+
+  return newArray
+}
+
