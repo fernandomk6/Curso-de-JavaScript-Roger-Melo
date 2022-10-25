@@ -92,3 +92,8 @@ console.log(2)
 
 Nesse exemplo a logUsers lida com todo o código assíncrono e evitamos completamente,
 o uso do then. Seja consistente, use ou thens ou async await.
+
+## Codigo sincrono vs Await
+
+Todo o codigo abaixo do await, é armazenado para ser executado apos todo os
+códigos sincronos.

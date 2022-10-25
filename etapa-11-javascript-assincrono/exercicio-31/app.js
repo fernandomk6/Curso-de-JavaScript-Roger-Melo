@@ -8,6 +8,39 @@
     do GitHub.
 */
 
+const logUser = async user => {
+  const data = await user
+  console.log(data)
+}
+
+const getUser = async username => {
+  const URL = `https://api.github.com/users/${username}`
+  const response = await fetch(URL)
+  const user = await response.json()
+
+  return user
+}
+
+const user = getUser('fernandomk6')
+// logUser(user)
+
+// const getGitHubUser = (username) => {
+//   const URL = `https://api.github.com/users/${username}`
+
+//   fetch(URL)
+//     .then(response => {
+//       return response.json()
+//     })
+//     .then(user => {
+//       console.log(user)
+//     })
+//     .catch(error => {
+//       console.log(error)
+//     })
+// }
+
+// getGitHubUser('fernandomk6')
+
 /*
   02
 
