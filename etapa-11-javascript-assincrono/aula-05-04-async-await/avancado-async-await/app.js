@@ -1,5 +1,1 @@
-// ambos os codigos fazem a mesma coisa
-
-console.log(Promise.resolve('Hello'))
-console.log((async () => 'Hello')())
-
+console.log('pronto para o asynct await amigo?')
