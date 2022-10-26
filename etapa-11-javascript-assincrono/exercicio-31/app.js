@@ -8,21 +8,22 @@
     do GitHub.
 */
 
-const logUser = async user => {
-  const data = await user
-  console.log(data)
+const logUser = async (promise) => {
+  const user = await promise
+  console.log(user)
 }
 
-const getUser = async username => {
-  const URL = `https://api.github.com/users/${username}`
-  const response = await fetch(URL)
+const getUser = async (username) => {
+  const url = `https://api.github.com/users/${username}`
+
+  const response = await fetch(url)
   const user = await response.json()
 
   return user
 }
 
-const user = getUser('fernandomk6')
-logUser(user)
+const promise = getUser('fernandomk6')
+logUser(promise)
 
 // const getGitHubUser = (username) => {
 //   const URL = `https://api.github.com/users/${username}`
