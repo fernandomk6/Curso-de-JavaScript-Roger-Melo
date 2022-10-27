@@ -8,22 +8,15 @@
     do GitHub.
 */
 
-const logUser = async (promise) => {
-  const user = await promise
-  console.log(user)
+const logGitHubUser = async username => 
+  console.log(await getGitHubUser(username))
+
+const getGitHubUser = async username => {
+  const response = await fetch(`https://api.github.com/users/${username}`)
+  return await response.json()
 }
 
-const getUser = async (username) => {
-  const url = `https://api.github.com/users/${username}`
-
-  const response = await fetch(url)
-  const user = await response.json()
-
-  return user
-}
-
-const promise = getUser('fernandomk6')
-logUser(promise)
+logGitHubUser('fernandomk6')
 
 // const getGitHubUser = (username) => {
 //   const URL = `https://api.github.com/users/${username}`
@@ -53,7 +46,8 @@ logUser(promise)
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 const isDivisibleBy2Or3 = number => number % 2 === 0 || number % 3 === 0
-const divisibleBy2Or3 = numbers.filter(isDivisibleBy2Or3)
+const getDivisibleBy2Or3 = numbers => numbers.filter(isDivisibleBy2Or3)
+const divisibleBy2Or3 = getDivisibleBy2Or3(numbers)
 
 console.log(divisibleBy2Or3)
 
@@ -73,11 +67,11 @@ console.log(divisibleBy2Or3)
 
 const syllablesOfMyName = ['fer', 'nan', 'do']
 
-const encryptDataReducer = (accumulator, syllable) => 
+const encryptPLanguageReducer = (accumulator, syllable) => 
   `${accumulator}P${syllable}`
 
 const encryptPLanguage = syllables => 
-  syllables.reduce(encryptDataReducer, '')
+  syllables.reduce(encryptPLanguageReducer, '')
 
 const myNameInPLanguage = encryptPLanguage(syllablesOfMyName)
 console.log(myNameInPLanguage)
@@ -98,12 +92,18 @@ console.log(myNameInPLanguage)
 */
 
 const myName = 'Fernando'
-const myNameLetters = myName.split('')
 
 const logLetterAndPosition = (letter, index) => 
-  console.log(`"${letter}" é a ${++index}ª letra do meu nome.`)
+  console.log(`"${letter}" é a ${index + 1}ª letra do meu nome.`)
 
-myNameLetters.forEach(logLetterAndPosition)
+const logLettersAndPosition = letters => 
+  letters
+    .split('')
+    .forEach(logLetterAndPosition)
+
+logLettersAndPosition(myName)
+
+
 
 /*
   05
@@ -124,10 +124,15 @@ const person = {
   age: 23
 }
 
-console.log(Object.keys(person).reduce((accumulator, key) => {
-  accumulator.push(`key: ${key}, value: ${person[key]}`)
-  return accumulator
-}, []))
+const logProperty = property => console.log(property)
+
+const logProperties = aObject => 
+  Object
+    .keys(aObject)
+    .forEach(logProperty)
+
+
+logProperties(person)
 
 /*
   06
@@ -194,4 +199,6 @@ const filter = (array, callback) => {
 
   return newArray
 }
+
+console.log(filter([0, 1, 2], item => item))
 
