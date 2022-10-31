@@ -25,33 +25,30 @@ const APIKey = 'XxPba3ZN4t21p7BYNiKqxgG9FdhlGCjI'
 const formSearch = document.querySelector('#formSearch')
 const divOut = document.querySelector('#out')
 
-formSearch.addEventListener('submit', (event) => {
+const searchGifs = async (inputValue) => {
+  const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${APIKey}&limit=1&q=${inputValue}`)
+  const gifs = await response.json()
+  return gifs
+}
+
+const prependGif = (url, title) => {
+  const img = document.createElement('img')
+  img.setAttribute('src', url)
+  img.setAttribute('alt', title)
+
+  divOut.prepend(img) 
+}
+
+const showResult = async (event) => {
   event.preventDefault()
   
   const inputValue = event.target.search.value
+  const gifs = await searchGifs(inputValue)
+  const firstResult = gifs.data[0]
+  const { id, title } = firstResult
+  const url = `https://i.giphy.com/media/${id}/200.gif`
+  
+  prependGif(url, title)
+}
 
-  fetch(`https://api.giphy.com/v1/gifs/search?api_key=${APIKey}&limit=1&q=${inputValue}`)
-    .then(response => {
-      return response.json()
-    })
-    .then(result => {
-      const id = result.data[0].id
-      const url = `https://i.giphy.com/media/${id}/200.gif`
-      const title = result.data[0].title
-      const img = document.createElement('img')
-      
-      img.setAttribute('src', url)
-      img.setAttribute('alt', title)
-
-      divOut.prepend(img)   
-    })
-    .catch(error => console.log(error))
-})
-
-
-// fetch(`https://api.giphy.com/v1/gifs/search?api_key=${APIKey}&limit=2&q=${inputValue}`)
-//   .then(response => response.json())
-//   .then(result => {
-//     console.log(result.data[0].images.original.url)
-//   })
-//   .catch(error => console.log(error))
+formSearch.addEventListener('submit', showResult)
