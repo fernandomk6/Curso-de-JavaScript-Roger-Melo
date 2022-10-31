@@ -21,20 +21,19 @@
   - Ignore os avisos no console. Para limpá-lo, pressione "ctrl + L".
 */
 
-const APIKey = 'XxPba3ZN4t21p7BYNiKqxgG9FdhlGCjI'
 const formSearch = document.querySelector('#formSearch')
 const divOut = document.querySelector('#out')
 
-const searchGifs = async (inputValue) => {
-  const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${APIKey}&limit=1&q=${inputValue}`)
-  const gifs = await response.json()
-  return gifs
+const searchGifs = async (value) => {
+  const APIKey = 'XxPba3ZN4t21p7BYNiKqxgG9FdhlGCjI'
+  const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${APIKey}&limit=1&q=${value}`)
+  return await response.json()
 }
 
-const prependGif = (url, title) => {
+const prependGif = (src, alt) => {
   const img = document.createElement('img')
-  img.setAttribute('src', url)
-  img.setAttribute('alt', title)
+  img.setAttribute('src', src)
+  img.setAttribute('alt', alt)
 
   divOut.prepend(img) 
 }
@@ -42,13 +41,13 @@ const prependGif = (url, title) => {
 const showResult = async (event) => {
   event.preventDefault()
   
-  const inputValue = event.target.search.value
-  const gifs = await searchGifs(inputValue)
-  const firstResult = gifs.data[0]
-  const { id, title } = firstResult
-  const url = `https://i.giphy.com/media/${id}/200.gif`
+  const value = event.target.search.value
+  const gifs = await searchGifs(value)
+  const [ gif ]= gifs.data
+  const { id, alt } = gif
+  const src = `https://i.giphy.com/media/${id}/200.gif`
   
-  prependGif(url, title)
+  prependGif(src, alt)
 }
 
 formSearch.addEventListener('submit', showResult)
