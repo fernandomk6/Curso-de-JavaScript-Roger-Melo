@@ -23,31 +23,77 @@
 
 const formSearch = document.querySelector('#formSearch')
 const divOut = document.querySelector('#out')
+const spanMessage = document.querySelector('#message')
+const APIKey = 'XxPba3ZN4t21p7BYNiKqxgG9FdhlGCjI'
+const limit = 100
+const APIURL = `https://api.giphy.com/v1/gifs/search?api_key=${APIKey}&limit=${limit}&q=[value]`
 
-const searchGifs = async (value) => {
-  const APIKey = 'XxPba3ZN4t21p7BYNiKqxgG9FdhlGCjI'
-  const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${APIKey}&limit=1&q=${value}`)
-  return await response.json()
+const handleMessage = (message) => { 
+  spanMessage.textContent = message ? message : ''
+}
+
+const getGifs = async (value) => {
+  handleMessage('Carregando...')
+
+  try {
+    const response = await fetch(APIURL.replace('[value]', value))
+
+    if (!response.ok) {
+      throw new Error('Não foi possível obter os dados')
+    }
+
+    return response.json()
+  } catch (error) {
+    handleMessage(error.message)
+  }
 }
 
 const prependGif = (src, alt) => {
   const img = document.createElement('img')
+  const div = document.createElement('div')
+
+  div.setAttribute('class', 'image-container')
   img.setAttribute('src', src)
   img.setAttribute('alt', alt)
 
-  divOut.prepend(img) 
+  div.appendChild(img)
+  divOut.prepend(div) 
 }
 
 const showResult = async (event) => {
   event.preventDefault()
   
-  const value = event.target.search.value
-  const gifs = await searchGifs(value)
-  const [ gif ]= gifs.data
-  const { id, alt } = gif
-  const src = `https://i.giphy.com/media/${id}/200.gif`
-  
-  prependGif(src, alt)
+  const input = event.target.search
+  const value = input.value
+
+  try {
+    const gifs = await getGifs(value)
+
+    if (!gifs) {
+      return
+    }
+
+    const resultNumbers = gifs.data.length
+    const noResults = resultNumbers === 0
+
+    if (noResults) {
+      throw new Error('Nenhum resultado')
+    }
+
+    const lastGifIndex = resultNumbers
+    const index = Math.floor(Math.random() * lastGifIndex)
+    const gif = gifs.data[index]
+    const alt = gif.title
+    const src = gif.images.downsized.url
+    
+    formSearch.reset()
+    prependGif(src, alt)
+    handleMessage()
+
+  } catch (error) {
+    handleMessage(error.message)
+    formSearch.reset()
+  }
 }
 
 formSearch.addEventListener('submit', showResult)
