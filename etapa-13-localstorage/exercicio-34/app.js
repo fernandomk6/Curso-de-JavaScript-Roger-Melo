@@ -42,6 +42,12 @@ const invert3 = aString => aString
 
 const numbers = [5, 20, 7, 32, 47, 15, 83, 91, 27, 33]
 const foundNumber = numbers.some(number => number === 15)
+const foundNumber2 = numbers.includes(15)
+const foundNumber3 = !!numbers.find(number => number === 15)
+// const foundNumber3 = Boolean(numbers.find(number => number === 15))
+
+// Abstração: é expor o excencial e ocultar o menos importante.
+// Abstração: é uma forma de reduzir a complexidade.
 
 // console.log(foundNumber)
 
