@@ -28,6 +28,12 @@ const invert2 = aString => {
   return reversedString
 }
 
+const invert3 = aString => aString
+  .split('')
+  .reduce((accumulator, char) => 
+    char + accumulator, '')
+
+
 /*
   02
   
