@@ -68,3 +68,80 @@ Por que iremos começar do começo.
 
 > "Primeiro você faz, depois você melhora".
 
+## Verificando se existe algo na localStorage
+
+localStorage.length amazena o numero de itens
+no local storage. Caso nenhum item esteja armazenado,
+localStorage.length retorna 0.
+
+## Um item
+
+Um item é um par de chave e valor.
+O valor deve ser uma string. A chave deve ser uma string.
+Vários itens podem ser armazenados na localStorage.
+
+```js
+localStorage.setItem('key', 'value')
+```
+
+## Objeto localStorage
+
+localStorage retorna um objeto com todos os pares de chave e valor
+setados na localStorage e uma propriedade length que armazena o
+número de itens setados.
+
+## Conversão de tipos
+
+Automáticamente os tipos passados como key ou value
+de um item da localStorage são transformados em strings.
+
+## LocalStorage x Dominio
+
+Os dados na localStorage são divididos por dominio.
+Ou seja cada dominio possuí seus itens de storage.
+
+## Evento window storage
+
+`window.addEventListener('storage', () => {})`
+
+É possivel setar um listener para executar uma função sempre que 
+algum valor é alterado na storage do dominio atual.
+
+## Obter itens da localStorage
+
+`const value = localStorage.getItem('key')`
+
+## Persistência de dados
+
+Uma vez os dados armazenados na localStorage, eles ficam salvos
+até serem removidos pelo javascript (removeItem ou clear) ou 
+até o usuário manualmente limpar os dados do navegador (cache).
+
+## LocalStorage funciona como um mini banco de dados no browser do usuário
+
+Os itens ficam salvos apenas nesse browser e nesse dominio.
+Os itens podem ser alterados, acessados e excluidos.
+Existe um limite de tamanho. tome por base 10mb.
+Use o localStorage para persistir dados de preferencia do usuário,
+dados de um request único... dados que são necessário apenas nesse
+browser e pode ser "perdidos". É uma funcionalidade extra, para
+melhorar a experiência do usuário e melhorar o desempenho, pois é possível
+obter os dados uma vez e armazenar na local storage ao invés de
+fazer vários requests. LocalStorage também é muito usado para testes
+e por desenvolvedores iniciantes para simular dados de um servidor WEB.
+
+## SetItem
+
+O setItem ou adiciona um item ou altera um item já existente com a mesma chave. 
+
+## Remover dados da localStorage
+
+Remover um item especifico
+- localStorage.removeItem('key')
+
+Remover todos os items da localStorage
+- localStorage.clear()
+
+**Lembre-se que a localStorage é por dominio**
+
+Cada dominio tem seus proprios itens na localStorage.
