@@ -145,11 +145,11 @@ e em parentesis de funções.
 
 ### Existem três lugares distintos que aceitam a sintaxe de propagação:
 
-Lista de argumentos de função ( myFunction(a, ...iterableObj, b))
-Literais de matriz ( [1, ...iterableObj, '4', 'five', 6])
-Literais de objeto ( { ...obj, key: 'value' })
+- Lista de argumentos de função ( myFunction(a, ...iterableObj, b))
+- Literais de matriz ( [1, ...iterableObj, '4', 'five', 6])
+- Literais de objeto ( { ...obj, key: 'value' })
 
-*iterableOBJ* = string ou array 
+*iterableOBJ* = string ou array  
 *obj* = objeto (chave valor) 
 
 ### Spread pode ser usado várias vezes
