@@ -189,3 +189,42 @@ Muito cuidado ao copiar objetos e arrays aninhdos, pois os elementos aninhados
 podem ser passados por referencia. 
 
 **O spread copia os valores apenas a primeira dimensão do array ou objeto.**
+
+Para objetos multidimensionais faça as copias usando JSON.stringify
+e JSON.parse.
+
+Para copiar array de objetos faça:
+
+```js
+const arrOfObjs = [{a:1},{a:1},{a:1},{a:1},{a:1}]
+const copyArrOfObj = arrOfObj.map(obj => ({...obj}))
+```
+
+Sendo as propriedades de obj todas tipos primitivos.
+
+### Mais afundo
+
+O spread retorna os valores do objIteravel sem os colchetes ou chaves.
+Separados por um separador válido, que pode ser um espaço ou virgula.
+
+`...[1,2,3] retorna: 1 <separator> 2 <separator> 3`
+`...{prop1: 1, prop2: 2} retorna: prop1: 1 <separator> prop2: 2`
+
+```js
+const a = [...[1, 2, 3]] // a = [ expressãoSpread ] => expressãoSpread === 1, 2, 3
+const a = {...{a: 1, b: 2}} // b = { expressãoExpread } => expressãoSpread === a: 1, b: 2
+```
+
+### Exemplo esquisito com strings
+
+```js
+const log = (f,e,r,n,a,x,d,o) => {
+  console.log(f,e,r,n,a,x,d,o)
+}
+
+const str = 'fernando'
+
+log(...str)
+
+// ...str === f, e, r, n, a, n, d, o
+```
