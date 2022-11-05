@@ -12,7 +12,7 @@ const numbers = [50, 100, 50]
 
 const sum = (x, y, z) => x + y + z
 
-console.log(sum(...numbers))
+// console.log(sum(...numbers))
 
 /*
   02
@@ -30,7 +30,7 @@ const capitalizeFirstLetter = aString =>
   , '')
 
 const myName = 'fernando'
-console.log(capitalizeFirstLetter(myName))
+// console.log(capitalizeFirstLetter(myName))
 
 /*
   03
@@ -44,7 +44,7 @@ console.log(capitalizeFirstLetter(myName))
 const randomNumber = Math.round(Math.random() * 100)
 const isGreaterThan50 = randomNumber => randomNumber > 50
 
-console.log(randomNumber)
+// console.log(randomNumber)
 
 const obj = {
   a: 1,
@@ -52,7 +52,7 @@ const obj = {
   [isGreaterThan50(randomNumber) ? 'c' : 'd']: isGreaterThan50(randomNumber) ? 3 : 4
 }
 
-console.log(obj)
+// console.log(obj)
 
 /*
   04
@@ -94,7 +94,7 @@ const newV = i(v)
 // { k: 't' }.d = 3
 
 
-console.log(v, newV)
+// console.log(v, newV)
 
 /*
   05
@@ -131,7 +131,7 @@ const timestampsdateValue = timestamps.map(timestamp => {
   return { [timestamp.date]: timestamp.value }
 })
 
-console.log(timestamps, timestampsdateValue)
+// console.log(timestamps, timestampsdateValue)
 
 /*
   06
@@ -163,12 +163,12 @@ const forEach = (aArray, aFunction) => {
 let accumulator = 0
 const oddNumbers = [51, 97, 65, 23]
 
-forEach(oddNumbers, (oddNumber, index, aArray) => {
-  console.log(`"${oddNumber}" é o ${index + 1}º item do array [${aArray.join(', ')}]`)
-  accumulator += oddNumber
-})
+// forEach(oddNumbers, (oddNumber, index, aArray) => {
+//   console.log(`"${oddNumber}" é o ${index + 1}º item do array [${aArray.join(', ')}]`)
+//   accumulator += oddNumber
+// })
 
-console.log(accumulator)
+// console.log(accumulator)
 
 /*
   07
