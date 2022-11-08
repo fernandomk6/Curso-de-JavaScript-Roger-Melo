@@ -33,43 +33,39 @@ const carouselItems = document.querySelectorAll('[data-js="carousel__item"]')
 
 const firstSlideIndex = 0
 const lastSlideIndex = carouselItems.length - 1
+
 let slideIndex = 0
 
-const changeSlideIndex = (shouldShowTheNextSlide) => {
-  
-  if (shouldShowTheNextSlide) {
-    if (slideIndex === lastSlideIndex) {
-      slideIndex = firstSlideIndex
-      return
-    } 
-  
-    slideIndex++
-    return
-  }
-
-  if (slideIndex === firstSlideIndex) {
-    slideIndex = lastSlideIndex
-    return
-  } 
-
-  slideIndex--
-}
-
-const showSlide = (carouselItem, index) => 
-  slideIndex === index
+const showSlide = (carouselItem, carouselItemIndex) => 
+  slideIndex === carouselItemIndex
     ? carouselItem.classList.add('carousel__item--visible')
     : carouselItem.classList.remove('carousel__item--visible')
 
-const changeSlide = event => {
-  const shouldShowTheNextSlide = event.target.dataset.js
-    .split('')
-    .slice(18)
-    .join('') === 'next'
+const incrementSlideIndex = () => 
+  slideIndex === lastSlideIndex 
+    ? slideIndex = firstSlideIndex
+    : slideIndex++
 
-  changeSlideIndex(shouldShowTheNextSlide)
+
+const decrementSlideIndex = () => 
+  slideIndex === firstSlideIndex
+    ? slideIndex = lastSlideIndex
+    : slideIndex--
+
+const showNextSlide = () => {
+  incrementSlideIndex()
   carouselItems.forEach(showSlide)
 }
 
-buttonNext.addEventListener('click', changeSlide)
-buttonPrev.addEventListener('click', changeSlide)
+const showPrevSlide = () => {
+  decrementSlideIndex()
+  carouselItems.forEach(showSlide)
+}
 
+const startSlides = () => 
+  setInterval(() => buttonNext.click(), 2000)
+
+buttonNext.addEventListener('click', showNextSlide)
+buttonPrev.addEventListener('click', showPrevSlide)
+
+startSlides()
