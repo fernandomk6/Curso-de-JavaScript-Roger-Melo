@@ -64,29 +64,24 @@ const obj = {
 // parametro: objeto 
 // seta a propriedade d do objeto com valor 3
 // retorna undefined
-const h = w => {
-  const copyW = {...w}
-  copyW.d = 3
-  return copyW
-}
+const h = w => ({
+    ...w,
+    e: 3
+  })
+
 
 // parametro: qualquer coisa
 // executa a função h passando o parametro como argumento
 // retorna undefined
-const q = f => {
-  return h({...f})
-}
+const q = f => h(f)
 
 // parametro: qualquer coisa
 // executa a função q passando o parametro como argumento
 // retorna undefined
-const i = b => {
-  return q({...b})
-}
+const i = b => q(b)
 
 // um pobjeto com propriedade k e valor t
 const v = { k: 't' }
-
 
 const newV = i(v)
 
@@ -127,9 +122,9 @@ const timestamps = [
   }
 ]
 
-const timestampsdateValue = timestamps.map(timestamp => {
-  return { [timestamp.date]: timestamp.value }
-})
+const timestampsdateValue = timestamps.map(timestamp => ({ 
+  [timestamp.date]: timestamp.value 
+}))
 
 // console.log(timestamps, timestampsdateValue)
 
@@ -153,10 +148,9 @@ const timestampsdateValue = timestamps.map(timestamp => {
   Dica 2: o método forEach nunca retorna um valor.
 */
 
-const forEach = (aArray, aFunction) => {
-  for (let index = 0; index < aArray.length; index++) {
-    const element = aArray[index]
-    aFunction(element, index, aArray)
+const forEach = (arr, func) => {
+  for (let i = 0; i < arr.length; i++) {
+    func(arr[i], i, arr)
   }
 }
 
