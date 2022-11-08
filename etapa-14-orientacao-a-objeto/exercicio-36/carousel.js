@@ -62,10 +62,6 @@ const showPrevSlide = () => {
   carouselItems.forEach(showSlide)
 }
 
-const startSlides = () => 
-  setInterval(() => buttonNext.click(), 2000)
-
 buttonNext.addEventListener('click', showNextSlide)
 buttonPrev.addEventListener('click', showPrevSlide)
 
-startSlides()
