@@ -34,23 +34,23 @@ const carouselItems = document.querySelectorAll('[data-js="carousel__item"]')
 const firstSlideIndex = 0
 const lastSlideIndex = carouselItems.length - 1
 
-let slideIndex = firstSlideIndex
+let actualSlideIndex = firstSlideIndex
 
 const showSlide = (carouselItem, carouselItemIndex) => 
-  slideIndex === carouselItemIndex
+  actualSlideIndex === carouselItemIndex
     ? carouselItem.classList.add('carousel__item--visible')
     : carouselItem.classList.remove('carousel__item--visible')
 
 const incrementSlideIndex = () => 
-  slideIndex === lastSlideIndex 
-    ? slideIndex = firstSlideIndex
-    : slideIndex++
+  actualSlideIndex === lastSlideIndex 
+    ? actualSlideIndex = firstSlideIndex
+    : actualSlideIndex++
 
 
 const decrementSlideIndex = () => 
-  slideIndex === firstSlideIndex
-    ? slideIndex = lastSlideIndex
-    : slideIndex--
+  actualSlideIndex === firstSlideIndex
+    ? actualSlideIndex = lastSlideIndex
+    : actualSlideIndex--
 
 const showNextSlide = () => {
   incrementSlideIndex()
