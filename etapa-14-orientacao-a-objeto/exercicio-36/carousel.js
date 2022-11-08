@@ -34,7 +34,7 @@ const carouselItems = document.querySelectorAll('[data-js="carousel__item"]')
 const firstSlideIndex = 0
 const lastSlideIndex = carouselItems.length - 1
 
-let slideIndex = 0
+let slideIndex = firstSlideIndex
 
 const showSlide = (carouselItem, carouselItemIndex) => 
   slideIndex === carouselItemIndex
