@@ -1,4 +1,4 @@
-/*
+ /*
   01
 
   - Descomente a let abaixo, descubra o que o código está tentando fazer e 
@@ -13,12 +13,14 @@ class Animal {
 
 class Rabbit extends Animal {
   constructor (name) {
-    this.name = name
-    this.created = new Date()
+    super(name)
+    this.createdAt = new Date()
   }
 }
 
-// let rabbit = new Rabbit('White Rabbit')
+const rabbit = new Rabbit('White Rabbit')
+
+// console.log(rabbit)
 
 /*
   02
@@ -27,8 +29,25 @@ class Rabbit extends Animal {
     funcione.
 */
 
-// const counter = new Counter()
+class Counter {
+  constructor () {
+    this.value = 0
+  }
 
+  getValue () {
+    console.log(this.value)
+    return this.value
+  }
+
+  increment () {
+    this.value++
+  }
+}
+
+const counter = new Counter()
+
+// counter.getValue()
+// counter.increment()
 // counter.getValue()
 // counter.increment()
 // counter.getValue()
@@ -50,6 +69,10 @@ const values = [
   () => {}
 ]
 
+const truthyValues = values.filter(Boolean)
+
+// console.log(truthyValues)
+
 /*
   04
 
@@ -60,62 +83,43 @@ const values = [
     funcione.
 */
 
-// class Clock {
-//   constructor ({ template }) {
-//     this.template = template
-//   }
+class Clock {
+  constructor ({ template, precision }) {
+    this.template = template
+    this.precision = precision || 1000
+  }
 
-//   render () {
-//     const date = new Date()
-//     let hours = date.getHours()
-//     let minutes = date.getMonth()
-//     let seconds = date.getSeconds()
+  getFormatedDateUnit (dateUnit) {
+    return dateUnit < 10 ? `0${dateUnit}` : dateUnit
+  }
 
-//     if (hours < 10) {
-//       hours = `0${hours}`
-//     }
+  getFormatedTime (hours, minutes, seconds) {
+    return this.template
+      .replace('h', hours)
+      .replace('m', minutes)
+      .replace('s', seconds)
+  }
 
-//     if (minutes < 10) {
-//       minutes = `0${minutes}`
-//     }
+  render () {
+    const date = new Date()
+    const hours = this.getFormatedDateUnit(date.getHours())
+    const minutes = this.getFormatedDateUnit(date.getMinutes())
+    const seconds = this.getFormatedDateUnit(date.getSeconds())
+    const formattedTime = this.getFormatedTime(hours, minutes, seconds)
 
-//     if (seconds < 10) {
-//       seconds = `0${seconds}`
-//     }
+    console.log(formattedTime)
+  }
 
-//     const formattedTime = this.template
-//       .replace('h', hours)
-//       .replace('m', minutes)
-//       .replace('s', seconds)
+  start () {
+    this.timer = setInterval(() => this.render(), this.precision)
+  }
 
-//     console.log(formattedTime)
-//   }
+  stop () {
+    clearInterval(this.timer)
+  }
+}
 
-//   start () {
-//     this.render()
-//     this.timer = setInterval(() => this.render(), 1000)
-//   }
-
-//   stop () {
-//     clearInterval(this.timer)
-//   }
-// }
-
-// class ExtendedClock extends Clock {
-//   constructor ({ options }) {
-//     super(options)
-    
-//     let { precision = 1000 } = options
-//     this.precision = precision
-//   }
-
-//   start () {
-//     this.render()
-//     this.timer = setInterval(() => this.render(), this.precision)
-//   }
-// }
-
-// const clock = ExtendedClock({ template: 'h:m:s', precision: 1000 })
+const clock = new Clock({ template: 'h:m:s', precision: 1000 })
 
 // clock.start()
 
@@ -127,7 +131,13 @@ const values = [
     caracteres que o textarea contém.
 */
 
+const textarea = document.querySelector('[data-js="textarea"]')
+const paragraph = document.querySelector('[data-js="paragraph"]')
 
+const showTextLength = event => {
+  paragraph.textContent = event.target.value.length
+}
+textarea.addEventListener('input', showTextLength)
 
 /*
   06
@@ -155,3 +165,32 @@ const values = [
     vídeo de correção dos exercícios um link para a aula de introdução ao 
     reduce e um link para a documentação do método no MDN.
 */
+
+const reduce = (array, callback, accumulator) => {
+  for (let index = 0; index < array.length; index++) {
+    accumulator = callback(accumulator, array[index], index, array)
+  }
+
+  return accumulator
+}
+
+const result1 = reduce([1, 2, 3], (acc, item) => acc + item, 0) === 6
+const result2 = reduce([2, 3, 4], (acc, item) => acc + item, 0) === 9 
+const result3 = reduce(
+  [1, 2],
+  (acc, item) => {
+    acc['number-' + item] = item
+    return acc
+  },
+  {}
+)
+const result4 = reduce([1, 2], (acc, _, index) => acc + index, 0) === 1
+const result5 = reduce([1, 2], (acc, _, index, array) => acc + array[index], 0) === 3
+
+// console.log({
+//   result1,
+//   result2,
+//   result3,
+//   result4,
+//   result5
+// })
