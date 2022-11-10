@@ -242,3 +242,17 @@ de propriedades. Os métodos todos devem ser declarados no corpo da class.
 Use a palavra `static` antes do método para setar que esse método é uma propriedade
 da classe e não do prototype. Sendo o método uma propriedade da class, ela pode
 ser acessada sem uma instancia. `Class.staticMethod()`
+
+## O constructor
+
+Sabemos que propriedades no corpo da classe serão atribuídas diretamente ao
+objeto instanciado, e métodos no corpo da classe serão atribuidos ao prototype.
+O this, instanciado pelo new, e que é manipualado no constructor, retornará um objeto
+com todas as propriedades criadas no constructor e todas as propriedades declaradas
+no corpo da classe. O constructor apenas é necessário para setar propriedades
+dinamicas para o objeto instanciado. Se você quiser instanciar um objeto sempre da mesma
+forma, com os mesmo dados. Use apenas propriedades no corpo da classe, atribuindo seu
+valor diretamente. O constructor apenas lidará com propriedades que poderão ser dinamicas.
+Ou seja, cada objeto pode ser instanciado com valores diferentes. Esses valores diferentes
+devem ser manipulados no constructor. Valores que serão iguais para todas as instancias,
+devem ser declarados no corpo da classe.
