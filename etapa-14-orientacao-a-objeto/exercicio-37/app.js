@@ -12,10 +12,7 @@ class Animal {
 }
 
 class Rabbit extends Animal {
-  constructor (name) {
-    super(name)
-    this.createdAt = new Date()
-  }
+  createdAt = new Date()  
 }
 
 const rabbit = new Rabbit('White Rabbit')
@@ -30,27 +27,37 @@ const rabbit = new Rabbit('White Rabbit')
 */
 
 class Counter {
-  constructor () {
-    this.value = 0
+  #value
+
+  constructor (value) {
+    this.validadeValue(value)
+    this.value = value
   }
 
-  getValue () {
-    console.log(this.value)
-    return this.value
+  get value () {
+    return this.#value
+  }
+
+  set value (value) {
+    this.validadeValue(value)
+    this.#value = value
   }
 
   increment () {
-    this.value++
+    this.#value++
+  }
+
+  validadeValue (value) {
+    if (Number.isFinite(value)) {
+      return
+    }
+
+    throw new TypeError('Value param must be a number')
   }
 }
 
-const counter = new Counter()
+const counter = new Counter(0)
 
-// counter.getValue()
-// counter.increment()
-// counter.getValue()
-// counter.increment()
-// counter.getValue()
 
 /*
   03
@@ -105,8 +112,8 @@ class Clock {
     const hours = this.getFormatedDateUnit(date.getHours())
     const minutes = this.getFormatedDateUnit(date.getMinutes())
     const seconds = this.getFormatedDateUnit(date.getSeconds())
-    const formattedTime = this.getFormatedTime(hours, minutes, seconds)
 
+    const formattedTime = this.getFormatedTime(hours, minutes, seconds)
     console.log(formattedTime)
   }
 
@@ -135,8 +142,12 @@ const textarea = document.querySelector('[data-js="textarea"]')
 const paragraph = document.querySelector('[data-js="paragraph"]')
 
 const showTextLength = event => {
-  paragraph.textContent = event.target.value.length
+  const length = event.target.value.length
+  const limitLength = event.target.maxLength
+
+  paragraph.textContent = `${length} / ${limitLength}`
 }
+
 textarea.addEventListener('input', showTextLength)
 
 /*

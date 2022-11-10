@@ -308,3 +308,14 @@ console.log(lucas.nome) // Lucas
 ```
 
 getter e setters são herdados e são publicos.
+
+## Propriedades puplicas ou public fieds
+
+São propriedades declaradas no corpo da class.
+São publicas.
+
+Mas diferente dos métodos declarados no corpo da classe,
+as porpriedades declaradas no corpo da classe são atribuidas diretamente
+ao objeto instanciado.
+
+Os métodos declarados no corpo da classe são atribidos ao prototype.
