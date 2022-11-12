@@ -10,6 +10,22 @@
   - Teste o método getColor do prototype dos carros.
 */
 
+const carPrototype = {
+  getColor() {
+    return this.color
+  }
+}
+
+const createCar = () => Object.create(carPrototype)
+
+const supra = createCar()
+const lancer = createCar()
+
+supra.color = 'vermelho'
+lancer.color = 'vinho'
+
+// console.log(supra.getColor(), lancer.getColor())
+
 
 
 /*
@@ -30,11 +46,10 @@ const movie = {
   starringRole: 'Tom Hanks'
 }
 
-function getSummary () {
-  return `${this.title} foi dirigido por ${this.director} e tem ${this.starringRole} no papel principal.`
-}
+const getSummary = ({ title, director, starringRole }) => 
+  `${title} foi dirigido por ${director} e tem ${starringRole} no papel principal.`
 
-console.log(getSummary())
+// console.log(getSummary(movie))
 
 /*
   03
@@ -48,15 +63,25 @@ console.log(getSummary())
   - Descomente o código e crie a função.
 */
 
-/*
-console.log(
-  arrayToObj([
-    ['prop1', 'value1'], 
-    ['prop2', 'value2'],
-    ['prop3', 'value3']
-  ])
-)
-*/
+// const arrayToObj = array => {
+//   return array.reduce((accumulator, keyAndValue) => {
+//     const key = keyAndValue[0]
+//     const value = keyAndValue[1]
+//     accumulator[key] = value
+
+//     return accumulator
+//   }, {})
+// }
+
+const arrayToObj = array => Object.fromEntries(array)
+
+// console.log(
+//   arrayToObj([
+//     ['prop1', 'value1'], 
+//     ['prop2', 'value2'],
+//     ['prop3', 'value3']
+//   ])
+// )
 
 /*
   04
@@ -86,43 +111,38 @@ const getFormattedTime = template => {
     .join(':')
 }
 
-class Clock {
-  constructor ({ template }) {
-    this.template = template
-  }
+const createClock = ({ template }) => ({
+  template,
 
   render () {
     const formattedTime = getFormattedTime(this.template)
     console.log(formattedTime)
-  }
+  },
 
   start () {
     const oneSecond = 1000
-
     this.render()
     this.timer = setInterval(() => this.render(), oneSecond)
-  }
+  },
 
   stop () {
     clearInterval(this.timer)
   }
-}
+})
 
-class ExtendedClock extends Clock {
-  constructor (options) {
-    super(options)
-    
-    const { precision = 1000 } = options
-    this.precision = precision
-  }
+
+const createExtendedClock = options =>  ({
+  ...createClock(options),
+
+  precision: options.precision || 1000,
 
   start () {
     this.render()
     this.timer = setInterval(() => this.render(), this.precision)
   }
-}
+})
 
-const clock = new ExtendedClock({ template: 'h:m:s', precision: 1000 })
+const clock = createExtendedClock({ template: 'h:m:s', precision: 1000 })
 
 // clock.start()
 
@@ -165,6 +185,21 @@ const clock = new ExtendedClock({ template: 'h:m:s', precision: 1000 })
         - download, com o valor 'table.csv'.
 */
 
+// const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
+// const table = document.querySelector('[data-js="table"]')
+
+// exportTableBtn.addEventListener('click', (e) => {
+//   const rows = Array.from(table.querySelectorAll('tr'))
+
+//   const stringCSV = rows
+//     .map(lineCSV => Array.from(lineCSV.children)
+//       .map(data => data.textContent)
+//       .join(','))
+//     .join('\n')
+
+//   e.target.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
+//   e.target.setAttribute('download', 'table.csv')
+// })
 
 
 /*
