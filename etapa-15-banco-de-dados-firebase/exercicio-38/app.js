@@ -64,11 +64,8 @@ const getSummary = ({ title, director, starringRole }) =>
 */
 
 // const arrayToObj = array => {
-//   return array.reduce((accumulator, keyAndValue) => {
-//     const key = keyAndValue[0]
-//     const value = keyAndValue[1]
+//   return array.reduce((accumulator, [key, value]) => {
 //     accumulator[key] = value
-
 //     return accumulator
 //   }, {})
 // }
@@ -131,11 +128,9 @@ const createClock = ({ template }) => ({
 })
 
 
-const createExtendedClock = options =>  ({
-  ...createClock(options),
-
-  precision: options.precision || 1000,
-
+const createExtendedClock = ({ template, precision = 1000 }) =>  ({
+  ...createClock({ template }),
+  precision,
   start () {
     this.render()
     this.timer = setInterval(() => this.render(), this.precision)
@@ -185,21 +180,21 @@ const clock = createExtendedClock({ template: 'h:m:s', precision: 1000 })
         - download, com o valor 'table.csv'.
 */
 
-// const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
-// const table = document.querySelector('[data-js="table"]')
+const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
+const table = document.querySelector('[data-js="table"]')
 
-// exportTableBtn.addEventListener('click', (e) => {
-//   const rows = Array.from(table.querySelectorAll('tr'))
+exportTableBtn.addEventListener('click', (e) => {
+  const rows = Array.from(table.querySelectorAll('tr'))
 
-//   const stringCSV = rows
-//     .map(lineCSV => Array.from(lineCSV.children)
-//       .map(data => data.textContent)
-//       .join(','))
-//     .join('\n')
+  const stringCSV = rows
+    .map(lineCSV => Array.from(lineCSV.children)
+      .map(data => data.textContent)
+      .join(','))
+    .join('\n')
 
-//   e.target.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
-//   e.target.setAttribute('download', 'table.csv')
-// })
+  e.target.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
+  e.target.setAttribute('download', 'table.csv')
+})
 
 
 /*
