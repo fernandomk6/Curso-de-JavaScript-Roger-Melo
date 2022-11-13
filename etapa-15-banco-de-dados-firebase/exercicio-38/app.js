@@ -180,53 +180,40 @@ const clock = createExtendedClock({ template: 'h:m:s', precision: 1000 })
         - download, com o valor 'table.csv'.
 */
 
-const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
-const table = document.querySelector('[data-js="table"]')
+// const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
+// const table = document.querySelector('[data-js="table"]')
 
-const getCellData = (accumulator, { textContent }) => {
-  accumulator.push(textContent)
-  return accumulator
-}
+// const getCellData = (accumulator, { textContent }) => {
+//   accumulator.push(textContent)
+//   return accumulator
+// }
 
-const getRowData = tableRow => {
-  const cells = Array.from(tableRow.cells)
-  return cells.reduce(getCellData, [])
-}
+// const getRowData = tableRow => {
+//   const cells = Array.from(tableRow.cells)
+//   return cells.reduce(getCellData, [])
+// }
 
-const getTableRows = table => Array.from(table.querySelectorAll('tr'))
-const getTableDatas = tableRows => tableRows.map(getRowData)
+// const getTableRows = table => Array.from(table.querySelectorAll('tr'))
+// const getTableDatas = tableRows => tableRows.map(getRowData)
 
-const tableToCSV = table => {
-  const tableRows = getTableRows(table)
-  const tableDatas = getTableDatas(tableRows)
-  const stringCSV = tableDatas.join('\n')
-  return stringCSV
-}
+// const tableToCSV = table => {
+//   const tableRows = getTableRows(table)
+//   const tableDatas = getTableDatas(tableRows)
+//   const stringCSV = tableDatas.join('\n')
+//   return stringCSV
+// }
 
-const setExportAttributesCSV = (link, stringCSV) => {
-  link.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
-  link.setAttribute('download', 'table.csv')
-}
+// const setExportAttributesCSV = (link, stringCSV) => {
+//   link.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
+//   link.setAttribute('download', 'table.csv')
+// }
 
-const exportTableToCSV = event => {
-  const stringCSV = tableToCSV(table)
-  setExportAttributesCSV(event.target, stringCSV)
-}
+// const exportTableToCSV = event => {
+//   const stringCSV = tableToCSV(table)
+//   setExportAttributesCSV(event.target, stringCSV)
+// }
 
-exportTableBtn.addEventListener('click', exportTableToCSV)
-
-// exportTableBtn.addEventListener('click', (e) => {
-//   const rows = Array.from(table.querySelectorAll('tr'))
-
-//   const stringCSV = rows
-//     .map(lineCSV => Array.from(lineCSV.children)
-//       .map(data => data.textContent)
-//       .join(','))
-//     .join('\n')
-
-//   e.target.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
-//   e.target.setAttribute('download', 'table.csv')
-// })
+// exportTableBtn.addEventListener('click', exportTableToCSV)
 
 
 /*
@@ -285,3 +272,116 @@ exportTableBtn.addEventListener('click', exportTableToCSV)
   PS: o desafio aqui é você implementar essa aplicação sozinho(a), antes 
   de ver as próximas aulas, ok? =)
 */
+
+const currencyOne = document.querySelector('[data-js="currency-one"]')
+const currencyTwo = document.querySelector('[data-js="currency-two"]')
+const convertedValue = document.querySelector('[data-js="converted-value"]')
+const currencyOneTimes = document.querySelector('[data-js="currency-one-times"]')
+
+const apiKey = 'f9bde40008634e49359a1a7d'
+const currencyCodesURL = `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
+
+const getLocalStorage = key => {
+  const value = localStorage.getItem(key)
+
+  return value && JSON.parse(value)
+}
+
+const setLocalStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value))
+
+const getCurrencyCodesURL = () => 
+  `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
+
+const getPairConversionURL = (currencyBaseCode, currencyTargetCode) => 
+  `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${currencyBaseCode}/${currencyTargetCode}`
+
+const fetchCurrencyCodes = async () => {
+  const currencyCodesURL = getCurrencyCodesURL()
+  const response = await fetch(currencyCodesURL)
+  const { supported_codes } = await response.json()
+
+  setLocalStorage('currencyCodes', supported_codes)
+
+  return supported_codes
+}
+
+const fetchExchangeRate = async pairConversionURL => {
+  const response = await fetch(pairConversionURL)
+  return await response.json()
+}
+
+const getCurrencyCodes = async () => 
+  getLocalStorage('currencyCodes') || fetchCurrencyCodes()
+
+const insertOptionIntoSelect = (select, option) => select.append(option)
+
+const createOption = value => {
+  const option = document.createElement('option')
+  option.value = value
+  option.textContent = value
+
+  return option
+}
+
+const setSelectedOption = (select, value) => {
+  const options = Array.from(select.children)
+  let selectedOption = null
+
+  options.forEach(option => {
+    const isTargetOption = option.value === value
+
+    if (isTargetOption) {
+      option.selected = true  
+      selectedOption = option
+    }
+  })
+
+  return selectedOption
+}
+
+const fillSelects = async () => {
+  const currencyCodes = await getCurrencyCodes()
+
+  currencyCodes.forEach(([ currencyCode ]) => {
+    insertOptionIntoSelect(currencyOne, createOption(currencyCode))
+    insertOptionIntoSelect(currencyTwo, createOption(currencyCode))
+  })
+
+  const { value: currencyBaseCode } = setSelectedOption(currencyOne, 'USD')
+  const { value: currencyTargetCode } = setSelectedOption(currencyTwo, 'BRL')
+
+  showConversionRate(currencyBaseCode, currencyTargetCode)
+}
+
+const getConversionRate = async (currencyBaseCode, currencyTargetCode) => {
+  const pairConversionURL = getPairConversionURL(currencyBaseCode, currencyTargetCode)
+  const { conversion_rate } = await fetchExchangeRate(pairConversionURL)
+
+  return conversion_rate
+}
+
+const showConversionRate = async (currencyBaseCode, currencyTargetCode) => {
+  const conversionRate = await getConversionRate(currencyBaseCode, currencyTargetCode)
+
+  convertedValue.textContent = conversionRate.toFixed(2)
+}
+
+const updateConversionRate = event => {
+  const value = event.target.value 
+  
+  console.log(value)
+}
+
+fillSelects()
+// tratar erros requests
+
+currencyOneTimes.addEventListener('input', updateConversionRate)
+
+// desenvolver updateConversionRate
+// pegar valor do select atual dinamicamente
+// getCurrencyOneValue e getCurrencyTwoValue
+// executar a showConversion rates recebendo os dois retornos
+// fazer a showConversion rate receber um terceiro parametro, que é o multiplicador
+// chamar a showConvesionRate na updateConversionRate e alterando os dados
+// que sabe depois substituir a chamada da showConversionRate para updateConversionRate sempre
+// Evitar da setSelectedOption retorne valor
