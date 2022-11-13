@@ -183,18 +183,50 @@ const clock = createExtendedClock({ template: 'h:m:s', precision: 1000 })
 const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
 const table = document.querySelector('[data-js="table"]')
 
-exportTableBtn.addEventListener('click', (e) => {
-  const rows = Array.from(table.querySelectorAll('tr'))
+const getCellData = (accumulator, { textContent }) => {
+  accumulator.push(textContent)
+  return accumulator
+}
 
-  const stringCSV = rows
-    .map(lineCSV => Array.from(lineCSV.children)
-      .map(data => data.textContent)
-      .join(','))
-    .join('\n')
+const getRowData = tableRow => {
+  const cells = Array.from(tableRow.cells)
+  return cells.reduce(getCellData, [])
+}
 
-  e.target.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
-  e.target.setAttribute('download', 'table.csv')
-})
+const getTableRows = table => Array.from(table.querySelectorAll('tr'))
+const getTableDatas = tableRows => tableRows.map(getRowData)
+
+const tableToCSV = table => {
+  const tableRows = getTableRows(table)
+  const tableDatas = getTableDatas(tableRows)
+  const stringCSV = tableDatas.join('\n')
+  return stringCSV
+}
+
+const setExportAttributesCSV = (link, stringCSV) => {
+  link.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
+  link.setAttribute('download', 'table.csv')
+}
+
+const exportTableToCSV = event => {
+  const stringCSV = tableToCSV(table)
+  setExportAttributesCSV(event.target, stringCSV)
+}
+
+exportTableBtn.addEventListener('click', exportTableToCSV)
+
+// exportTableBtn.addEventListener('click', (e) => {
+//   const rows = Array.from(table.querySelectorAll('tr'))
+
+//   const stringCSV = rows
+//     .map(lineCSV => Array.from(lineCSV.children)
+//       .map(data => data.textContent)
+//       .join(','))
+//     .join('\n')
+
+//   e.target.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
+//   e.target.setAttribute('download', 'table.csv')
+// })
 
 
 /*
