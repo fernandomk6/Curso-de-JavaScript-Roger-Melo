@@ -277,9 +277,15 @@ const currencyOne = document.querySelector('[data-js="currency-one"]')
 const currencyTwo = document.querySelector('[data-js="currency-two"]')
 const convertedValue = document.querySelector('[data-js="converted-value"]')
 const currencyOneTimes = document.querySelector('[data-js="currency-one-times"]')
+const feedbackMessage = document.querySelector('[data-js="feedback-message"]')
 
 const apiKey = 'f9bde40008634e49359a1a7d'
-const currencyCodesURL = `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
+
+const defaultCurrencyBase = 'USD'
+const defaultCurrencyTarget = 'BRL'
+
+const showFeedbackMessage = message => feedbackMessage.textContent = message
+const hideFeedbackMessage = () => feedbackMessage.textContent = ''
 
 const getLocalStorage = key => {
   const value = localStorage.getItem(key)
@@ -296,23 +302,62 @@ const getPairConversionURL = (currencyBaseCode, currencyTargetCode) =>
   `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${currencyBaseCode}/${currencyTargetCode}`
 
 const fetchCurrencyCodes = async () => {
-  const currencyCodesURL = getCurrencyCodesURL()
-  const response = await fetch(currencyCodesURL)
-  const { supported_codes } = await response.json()
+  try {
+    const currencyCodesURL = getCurrencyCodesURL()
+    const response = await fetch(currencyCodesURL)
 
-  setLocalStorage('currencyCodes', supported_codes)
+    const { supported_codes, 'error-type': errorType} = await response.json()
 
-  return supported_codes
+    if (errorType) {
+      const errorResponses = {
+        'invalid-key': 'Sua chave de API não é válida.',
+        'inactive-account': 'Seu endereço de e-mail não foi confirmado.',
+        'quota-reached': 'Sua conta atingiu o número de solicitações permitidas pelo seu plano.',
+      }
+
+      const message = `${errorType} ${errorResponses[errorType]}`
+      throw new Error(message)
+    }
+
+    setLocalStorage('currencyCodes', supported_codes)
+    return supported_codes
+
+  } catch (error) {
+    console.log(error)
+    showFeedbackMessage('Falha ao obter códigos suportados')
+  }
 }
 
 const fetchExchangeRate = async pairConversionURL => {
-  const response = await fetch(pairConversionURL)
-  return await response.json()
+  try {
+    const response = await fetch(pairConversionURL)
+    const exchangeRate = await response.json()
+    const { 'error-type': errorType } = exchangeRate
+    
+    if (errorType) {
+      const errorResponses = {
+        'unsupported-code': 'Não damos suporte ao código da moeda fornecida',
+        'malformed-request': 'Alguma parte do seu pedido não segue a estrutura de request.',
+        'invalid-key': 'Sua chave da API não é válida.',
+        'inactive-account': 'Se enderço de email não foi confirmado.',
+        'quota-reached': 'Sua conta atingiu o número máximo de solicitações permitidas pelo plano.'
+      }
+
+      const message = `${errorType} ${errorResponses[errorType]}`
+      throw new Error(message)
+    }
+
+    return exchangeRate
+
+  } catch (error) {
+    console.log(error)
+    showFeedbackMessage('Falha ao obter taxa de câmbio')
+  }
 }
 
 const getCurrencyCodes = async () => 
   getLocalStorage('currencyCodes') || fetchCurrencyCodes()
-
+  
 const insertOptionIntoSelect = (select, option) => select.append(option)
 
 const createOption = value => {
@@ -325,63 +370,61 @@ const createOption = value => {
 
 const setSelectedOption = (select, value) => {
   const options = Array.from(select.children)
-  let selectedOption = null
-
+  
   options.forEach(option => {
     const isTargetOption = option.value === value
 
     if (isTargetOption) {
       option.selected = true  
-      selectedOption = option
     }
   })
-
-  return selectedOption
 }
 
 const fillSelects = async () => {
-  const currencyCodes = await getCurrencyCodes()
+  const currencyCodesTemplate = [[defaultCurrencyBase], [defaultCurrencyTarget]]
+  const currencyCodes = await getCurrencyCodes() || currencyCodesTemplate
 
   currencyCodes.forEach(([ currencyCode ]) => {
     insertOptionIntoSelect(currencyOne, createOption(currencyCode))
     insertOptionIntoSelect(currencyTwo, createOption(currencyCode))
   })
 
-  const { value: currencyBaseCode } = setSelectedOption(currencyOne, 'USD')
-  const { value: currencyTargetCode } = setSelectedOption(currencyTwo, 'BRL')
+  setSelectedOption(currencyOne, defaultCurrencyBase)
+  setSelectedOption(currencyTwo, defaultCurrencyTarget)
 
-  showConversionRate(currencyBaseCode, currencyTargetCode)
+  updateConversionRate()
 }
 
-const getConversionRate = async (currencyBaseCode, currencyTargetCode) => {
-  const pairConversionURL = getPairConversionURL(currencyBaseCode, currencyTargetCode)
-  const { conversion_rate } = await fetchExchangeRate(pairConversionURL)
+const getConversionRate = async (currencyBase, currencyTarget) => {
+  const pairConversionURL = getPairConversionURL(currencyBase, currencyTarget)
+  const { conversion_rate = 0 } = await fetchExchangeRate(pairConversionURL)
 
   return conversion_rate
 }
 
-const showConversionRate = async (currencyBaseCode, currencyTargetCode) => {
-  const conversionRate = await getConversionRate(currencyBaseCode, currencyTargetCode)
+const showConversionRate = async (currencyBase, currencyTarget, multiplier = 1) => {
+  const conversionRate = await getConversionRate(currencyBase, currencyTarget)
+  const conversionRateAmount = Number(conversionRate.toFixed(2)) * multiplier
 
-  convertedValue.textContent = conversionRate.toFixed(2)
+  convertedValue.textContent = conversionRateAmount.toFixed(2)
 }
 
-const updateConversionRate = event => {
-  const value = event.target.value 
-  
-  console.log(value)
+const getSelectedCurrencies = () => { 
+  const currencyBase = currencyOne.value
+  const currencyTarget = currencyTwo.value
+
+  return [currencyBase, currencyTarget]
+}
+
+const updateConversionRate = () => {
+  const multiplier = currencyOneTimes.value
+  const [ currencyBase, currencyTarget ] = getSelectedCurrencies()
+
+  showConversionRate(currencyBase, currencyTarget, multiplier)
 }
 
 fillSelects()
-// tratar erros requests
 
 currencyOneTimes.addEventListener('input', updateConversionRate)
-
-// desenvolver updateConversionRate
-// pegar valor do select atual dinamicamente
-// getCurrencyOneValue e getCurrencyTwoValue
-// executar a showConversion rates recebendo os dois retornos
-// fazer a showConversion rate receber um terceiro parametro, que é o multiplicador
-// chamar a showConvesionRate na updateConversionRate e alterando os dados
-// que sabe depois substituir a chamada da showConversionRate para updateConversionRate sempre
-// Evitar da setSelectedOption retorne valor
+currencyOne.addEventListener('input', updateConversionRate)
+currencyTwo.addEventListener('input', updateConversionRate)
