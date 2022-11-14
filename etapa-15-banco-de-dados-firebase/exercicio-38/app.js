@@ -285,21 +285,16 @@ const defaultCurrencyBase = 'USD'
 const defaultCurrencyTarget = 'BRL'
 
 const showFeedbackMessage = message => feedbackMessage.textContent = message
-const hideFeedbackMessage = () => feedbackMessage.textContent = ''
 
-const getLocalStorage = key => {
-  const value = localStorage.getItem(key)
-
-  return value && JSON.parse(value)
-}
+const getLocalStorage = key => JSON.parse(localStorage.getItem(key))
 
 const setLocalStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value))
 
 const getCurrencyCodesURL = () => 
   `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
 
-const getPairConversionURL = (currencyBaseCode, currencyTargetCode) => 
-  `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${currencyBaseCode}/${currencyTargetCode}`
+const getPairConversionURL = (currencyBase, currencyTarget) => 
+  `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${currencyBase}/${currencyTarget}`
 
 const fetchCurrencyCodes = async () => {
   try {
@@ -360,10 +355,11 @@ const getCurrencyCodes = async () =>
   
 const insertOptionIntoSelect = (select, option) => select.append(option)
 
-const createOption = value => {
+
+const createOption = (value, textContent) => {
   const option = document.createElement('option')
   option.value = value
-  option.textContent = value
+  option.textContent = textContent || value
 
   return option
 }
@@ -423,8 +419,7 @@ const updateConversionRate = () => {
   showConversionRate(currencyBase, currencyTarget, multiplier)
 }
 
-fillSelects()
-
+window.addEventListener('load', fillSelects)
 currencyOneTimes.addEventListener('input', updateConversionRate)
 currencyOne.addEventListener('input', updateConversionRate)
 currencyTwo.addEventListener('input', updateConversionRate)
