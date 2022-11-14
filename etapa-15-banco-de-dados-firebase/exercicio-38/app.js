@@ -26,8 +26,6 @@ lancer.color = 'vinho'
 
 // console.log(supra.getColor(), lancer.getColor())
 
-
-
 /*
   02
 
@@ -127,7 +125,6 @@ const createClock = ({ template }) => ({
   }
 })
 
-
 const createExtendedClock = ({ template, precision = 1000 }) =>  ({
   ...createClock({ template }),
   precision,
@@ -180,40 +177,40 @@ const clock = createExtendedClock({ template: 'h:m:s', precision: 1000 })
         - download, com o valor 'table.csv'.
 */
 
-// const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
-// const table = document.querySelector('[data-js="table"]')
+const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
+const table = document.querySelector('[data-js="table"]')
 
-// const getCellData = (accumulator, { textContent }) => {
-//   accumulator.push(textContent)
-//   return accumulator
-// }
+const getCellData = (accumulator, { textContent }) => {
+  accumulator.push(textContent)
+  return accumulator
+}
 
-// const getRowData = tableRow => {
-//   const cells = Array.from(tableRow.cells)
-//   return cells.reduce(getCellData, [])
-// }
+const getRowData = tableRow => {
+  const cells = Array.from(tableRow.cells)
+  return cells.reduce(getCellData, []).join()
+}
 
-// const getTableRows = table => Array.from(table.querySelectorAll('tr'))
-// const getTableDatas = tableRows => tableRows.map(getRowData)
+const getTableRows = table => Array.from(table.querySelectorAll('tr'))
+const getTableDatas = tableRows => tableRows.map(getRowData)
 
-// const tableToCSV = table => {
-//   const tableRows = getTableRows(table)
-//   const tableDatas = getTableDatas(tableRows)
-//   const stringCSV = tableDatas.join('\n')
-//   return stringCSV
-// }
+const tableToCSV = table => {
+  const tableRows = getTableRows(table)
+  const tableDatas = getTableDatas(tableRows)
+  const stringCSV = tableDatas.join('\n')
+  return stringCSV
+}
 
-// const setExportAttributesCSV = (link, stringCSV) => {
-//   link.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
-//   link.setAttribute('download', 'table.csv')
-// }
+const setExportAttributesCSV = (link, stringCSV) => {
+  link.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(stringCSV)}`)
+  link.setAttribute('download', 'table.csv')
+}
 
-// const exportTableToCSV = event => {
-//   const stringCSV = tableToCSV(table)
-//   setExportAttributesCSV(event.target, stringCSV)
-// }
+const exportTableToCSV = event => {
+  const stringCSV = tableToCSV(table)
+  setExportAttributesCSV(event.target, stringCSV)
+}
 
-// exportTableBtn.addEventListener('click', exportTableToCSV)
+exportTableBtn.addEventListener('click', exportTableToCSV)
 
 
 /*
@@ -273,153 +270,153 @@ const clock = createExtendedClock({ template: 'h:m:s', precision: 1000 })
   de ver as próximas aulas, ok? =)
 */
 
-const currencyOne = document.querySelector('[data-js="currency-one"]')
-const currencyTwo = document.querySelector('[data-js="currency-two"]')
-const convertedValue = document.querySelector('[data-js="converted-value"]')
-const currencyOneTimes = document.querySelector('[data-js="currency-one-times"]')
-const feedbackMessage = document.querySelector('[data-js="feedback-message"]')
+// const currencyOne = document.querySelector('[data-js="currency-one"]')
+// const currencyTwo = document.querySelector('[data-js="currency-two"]')
+// const convertedValue = document.querySelector('[data-js="converted-value"]')
+// const currencyOneTimes = document.querySelector('[data-js="currency-one-times"]')
+// const feedbackMessage = document.querySelector('[data-js="feedback-message"]')
 
-const apiKey = 'f9bde40008634e49359a1a7d'
+// const apiKey = 'f9bde40008634e49359a1a7d'
 
-const defaultCurrencyBase = 'USD'
-const defaultCurrencyTarget = 'BRL'
+// const defaultCurrencyBase = 'USD'
+// const defaultCurrencyTarget = 'BRL'
 
-const showFeedbackMessage = message => feedbackMessage.textContent = message
+// const showFeedbackMessage = message => feedbackMessage.textContent = message
 
-const getLocalStorage = key => JSON.parse(localStorage.getItem(key))
+// const getLocalStorage = key => JSON.parse(localStorage.getItem(key))
 
-const setLocalStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value))
+// const setLocalStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value))
 
-const getCurrencyCodesURL = () => 
-  `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
+// const getCurrencyCodesURL = () => 
+//   `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
 
-const getPairConversionURL = (currencyBase, currencyTarget) => 
-  `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${currencyBase}/${currencyTarget}`
+// const getPairConversionURL = (currencyBase, currencyTarget) => 
+//   `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${currencyBase}/${currencyTarget}`
 
-const fetchCurrencyCodes = async () => {
-  try {
-    const currencyCodesURL = getCurrencyCodesURL()
-    const response = await fetch(currencyCodesURL)
+// const fetchCurrencyCodes = async () => {
+//   try {
+//     const currencyCodesURL = getCurrencyCodesURL()
+//     const response = await fetch(currencyCodesURL)
 
-    const { supported_codes, 'error-type': errorType} = await response.json()
+//     const { supported_codes, 'error-type': errorType} = await response.json()
 
-    if (errorType) {
-      const errorResponses = {
-        'invalid-key': 'Sua chave de API não é válida.',
-        'inactive-account': 'Seu endereço de e-mail não foi confirmado.',
-        'quota-reached': 'Sua conta atingiu o número de solicitações permitidas pelo seu plano.',
-      }
+//     if (errorType) {
+//       const errorResponses = {
+//         'invalid-key': 'Sua chave de API não é válida.',
+//         'inactive-account': 'Seu endereço de e-mail não foi confirmado.',
+//         'quota-reached': 'Sua conta atingiu o número de solicitações permitidas pelo seu plano.',
+//       }
 
-      const message = `${errorType} ${errorResponses[errorType]}`
-      throw new Error(message)
-    }
+//       const message = `${errorType} ${errorResponses[errorType]}`
+//       throw new Error(message)
+//     }
 
-    setLocalStorage('currencyCodes', supported_codes)
-    return supported_codes
+//     setLocalStorage('currencyCodes', supported_codes)
+//     return supported_codes
 
-  } catch (error) {
-    console.log(error)
-    showFeedbackMessage('Falha ao obter códigos suportados')
-  }
-}
+//   } catch (error) {
+//     console.log(error)
+//     showFeedbackMessage('Falha ao obter códigos suportados')
+//   }
+// }
 
-const fetchExchangeRate = async pairConversionURL => {
-  try {
-    const response = await fetch(pairConversionURL)
-    const exchangeRate = await response.json()
-    const { 'error-type': errorType } = exchangeRate
+// const fetchExchangeRate = async pairConversionURL => {
+//   try {
+//     const response = await fetch(pairConversionURL)
+//     const exchangeRate = await response.json()
+//     const { 'error-type': errorType } = exchangeRate
     
-    if (errorType) {
-      const errorResponses = {
-        'unsupported-code': 'Não damos suporte ao código da moeda fornecida',
-        'malformed-request': 'Alguma parte do seu pedido não segue a estrutura de request.',
-        'invalid-key': 'Sua chave da API não é válida.',
-        'inactive-account': 'Se enderço de email não foi confirmado.',
-        'quota-reached': 'Sua conta atingiu o número máximo de solicitações permitidas pelo plano.'
-      }
+//     if (errorType) {
+//       const errorResponses = {
+//         'unsupported-code': 'Não damos suporte ao código da moeda fornecida',
+//         'malformed-request': 'Alguma parte do seu pedido não segue a estrutura de request.',
+//         'invalid-key': 'Sua chave da API não é válida.',
+//         'inactive-account': 'Se enderço de email não foi confirmado.',
+//         'quota-reached': 'Sua conta atingiu o número máximo de solicitações permitidas pelo plano.'
+//       }
 
-      const message = `${errorType} ${errorResponses[errorType]}`
-      throw new Error(message)
-    }
+//       const message = `${errorType} ${errorResponses[errorType]}`
+//       throw new Error(message)
+//     }
 
-    return exchangeRate
+//     return exchangeRate
 
-  } catch (error) {
-    console.log(error)
-    showFeedbackMessage('Falha ao obter taxa de câmbio')
-  }
-}
+//   } catch (error) {
+//     console.log(error)
+//     showFeedbackMessage('Falha ao obter taxa de câmbio')
+//   }
+// }
 
-const getCurrencyCodes = async () => 
-  getLocalStorage('currencyCodes') || fetchCurrencyCodes()
+// const getCurrencyCodes = async () => 
+//   getLocalStorage('currencyCodes') || fetchCurrencyCodes()
   
-const insertOptionIntoSelect = (select, option) => select.append(option)
+// const insertOptionIntoSelect = (select, option) => select.append(option)
 
 
-const createOption = (value, textContent) => {
-  const option = document.createElement('option')
-  option.value = value
-  option.textContent = textContent || value
+// const createOption = (value, textContent) => {
+//   const option = document.createElement('option')
+//   option.value = value
+//   option.textContent = textContent || value
 
-  return option
-}
+//   return option
+// }
 
-const setSelectedOption = (select, value) => {
-  const options = Array.from(select.children)
+// const setSelectedOption = (select, value) => {
+//   const options = Array.from(select.children)
   
-  options.forEach(option => {
-    const isTargetOption = option.value === value
+//   options.forEach(option => {
+//     const isTargetOption = option.value === value
 
-    if (isTargetOption) {
-      option.selected = true  
-    }
-  })
-}
+//     if (isTargetOption) {
+//       option.selected = true  
+//     }
+//   })
+// }
 
-const fillSelects = async () => {
-  const currencyCodesTemplate = [[defaultCurrencyBase], [defaultCurrencyTarget]]
-  const currencyCodes = await getCurrencyCodes() || currencyCodesTemplate
+// const fillSelects = async () => {
+//   const currencyCodesTemplate = [[defaultCurrencyBase], [defaultCurrencyTarget]]
+//   const currencyCodes = await getCurrencyCodes() || currencyCodesTemplate
 
-  currencyCodes.forEach(([ currencyCode ]) => {
-    insertOptionIntoSelect(currencyOne, createOption(currencyCode))
-    insertOptionIntoSelect(currencyTwo, createOption(currencyCode))
-  })
+//   currencyCodes.forEach(([ currencyCode ]) => {
+//     insertOptionIntoSelect(currencyOne, createOption(currencyCode))
+//     insertOptionIntoSelect(currencyTwo, createOption(currencyCode))
+//   })
 
-  setSelectedOption(currencyOne, defaultCurrencyBase)
-  setSelectedOption(currencyTwo, defaultCurrencyTarget)
+//   setSelectedOption(currencyOne, defaultCurrencyBase)
+//   setSelectedOption(currencyTwo, defaultCurrencyTarget)
 
-  updateConversionRate()
-}
+//   updateConversionRate()
+// }
 
-const getConversionRate = async (currencyBase, currencyTarget) => {
-  const pairConversionURL = getPairConversionURL(currencyBase, currencyTarget)
-  const { conversion_rate = 0 } = await fetchExchangeRate(pairConversionURL)
+// const getConversionRate = async (currencyBase, currencyTarget) => {
+//   const pairConversionURL = getPairConversionURL(currencyBase, currencyTarget)
+//   const { conversion_rate = 0 } = await fetchExchangeRate(pairConversionURL)
 
-  return conversion_rate
-}
+//   return conversion_rate
+// }
 
-const showConversionRate = async (currencyBase, currencyTarget, multiplier = 1) => {
-  const conversionRate = await getConversionRate(currencyBase, currencyTarget)
-  const conversionRateAmount = Number(conversionRate.toFixed(2)) * multiplier
+// const showConversionRate = async (currencyBase, currencyTarget, multiplier = 1) => {
+//   const conversionRate = await getConversionRate(currencyBase, currencyTarget)
+//   const conversionRateAmount = Number(conversionRate.toFixed(2)) * multiplier
 
-  convertedValue.textContent = conversionRateAmount.toFixed(2)
-}
+//   convertedValue.textContent = conversionRateAmount.toFixed(2)
+// }
 
-const getSelectedCurrencies = () => { 
-  const currencyBase = currencyOne.value
-  const currencyTarget = currencyTwo.value
+// const getSelectedCurrencies = () => { 
+//   const currencyBase = currencyOne.value
+//   const currencyTarget = currencyTwo.value
 
-  return [currencyBase, currencyTarget]
-}
+//   return [currencyBase, currencyTarget]
+// }
 
-const updateConversionRate = () => {
-  const multiplier = currencyOneTimes.value
-  const [ currencyBase, currencyTarget ] = getSelectedCurrencies()
+// const updateConversionRate = () => {
+//   const multiplier = currencyOneTimes.value
+//   const [ currencyBase, currencyTarget ] = getSelectedCurrencies()
 
-  showConversionRate(currencyBase, currencyTarget, multiplier)
-}
+//   showConversionRate(currencyBase, currencyTarget, multiplier)
+// }
 
-window.addEventListener('load', fillSelects)
-currencyOneTimes.addEventListener('input', updateConversionRate)
-currencyOne.addEventListener('input', updateConversionRate)
-currencyTwo.addEventListener('input', updateConversionRate)
+// window.addEventListener('load', fillSelects)
+// currencyOneTimes.addEventListener('input', updateConversionRate)
+// currencyOne.addEventListener('input', updateConversionRate)
+// currencyTwo.addEventListener('input', updateConversionRate)
