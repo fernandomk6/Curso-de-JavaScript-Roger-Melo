@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container text-white my-5">
+    <h2>Games</h2>
+
+    <ul data-js="games-list"></ul>
+
+    <form>
+      <label for="game">Adicionar game</label>
+
+      <div class="input-group">
+        <input class="form-control bg-transparent text-white" type="text" name="game" placeholder="Ex: Ghost of Tsushima" required autofocus>
+        <input class="btn btn-primary" type="submit" value="Adicionar">
+      </div>
+    </form>
+  </div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
