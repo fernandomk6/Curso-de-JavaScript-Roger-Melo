@@ -306,6 +306,7 @@ const fetchCurrencyCodes = async () => {
     if (errorType) throw new Error(errorType)
     
     setLocalStorage('currencyCodes', supported_codes)
+    
     return supported_codes
 
   } catch ({ message }) {
@@ -324,6 +325,7 @@ const fetchExchangeRate = async pairConversionURL => {
     const { 'error-type': errorType } = exchangeRate
     
     if (errorType) throw new Error(errorType)
+
     return exchangeRate
 
   } catch ({ message }) {
@@ -337,9 +339,9 @@ const getCurrencyCodes = async () =>
   
 const insertOptionIntoSelect = (select, option) => select.append(option)
 
-
 const createOption = (value, textContent) => {
   const option = document.createElement('option')
+
   option.value = value
   option.textContent = textContent || value
 
@@ -348,18 +350,18 @@ const createOption = (value, textContent) => {
 
 const setSelectedOption = (select, value) => {
   const options = Array.from(select.children)
-  
-  options.forEach(option => {
-    const isTargetOption = option.value === value
 
-    if (isTargetOption) {
-      option.selected = true  
-    }
-  })
+  const checkIfOptionShouldBeSelected = option => {
+    const isTargetOption = option.value === value
+    if (!isTargetOption) return
+    option.selected = true
+  }
+  
+  options.forEach(checkIfOptionShouldBeSelected)
 }
 
 const fillSelects = async () => {
-  const currencyCodesTemplate = [[defaultCurrencyBase], [defaultCurrencyTarget]]
+  const currencyCodesTemplate = [[ defaultCurrencyBase ], [ defaultCurrencyTarget ]]
   const currencyCodes = await getCurrencyCodes() || currencyCodesTemplate
 
   currencyCodes.forEach(([ currencyCode ]) => {
@@ -393,7 +395,7 @@ const getSelectedCurrencies = () => {
   const currencyBase = currencyOne.value
   const currencyTarget = currencyTwo.value
 
-  return [currencyBase, currencyTarget]
+  return [ currencyBase, currencyTarget ]
 }
 
 const updateConversionRate = () => {
