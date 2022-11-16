@@ -16,9 +16,11 @@
       array que contenha 2 números e com um outro que contenha 4 números.
 */
 
-const numbers = [50, 100, 50]
+const numbers = [50, 100, 50, 1]
 
-const sum = (x, y, z) => x + y + z
+const addNumberToAccumulator = (accumulator, number) => accumulator + number
+
+const sum = (...numbers) => numbers.reduce(addNumberToAccumulator, 0)
 
 console.log(sum(...numbers))
 
