@@ -45,4 +45,8 @@ que é como se fosse uma instancia de class.
 Essa IIFE usada é como uma factory function e a let exchangeRates é como uma propriedade
 privada.
 
+Essa abordagem também pode ser usada para evitar usar e manipular objetos globais.
+
+Você cria o objeto dentro do escopo de uma função e manipula esse objeto por meio
+de métodos retornados por essa função.
 */
