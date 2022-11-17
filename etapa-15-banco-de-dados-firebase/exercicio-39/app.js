@@ -16,13 +16,17 @@
       array que contenha 2 números e com um outro que contenha 4 números.
 */
 
-const numbers = [50, 100, 50, 1]
+const numbers = [50, 100, 50]
+const numbers2 = [50, 100]
+const numbers3 = [50, 100, 50, 1]
 
-const addNumberToAccumulator = (accumulator, number) => accumulator + number
+const addNumberTo = (accumulator, number) => accumulator + number
 
-const sum = (...numbers) => numbers.reduce(addNumberToAccumulator, 0)
+const sum = (...numbers) => numbers.reduce(addNumberTo, 0)
 
-console.log(sum(...numbers))
+// console.log(sum(...numbers))
+// console.log(sum(...numbers2))
+// console.log(sum(...numbers3))
 
 /*
   02
@@ -38,7 +42,39 @@ console.log(sum(...numbers))
     utilizando a classe "active".
 */
 
+// clicar abre se clicar de novo fecha
+// quando um abre todos os outros fecham
 
+const accordionItems = Array.from(document.querySelectorAll('.accordion-item'))
+
+const closeAccordionsExcept = targetAccordionItem => {
+  const unClickedAccordions = accordionItems.filter(accordionItem => accordionItem !== targetAccordionItem)
+
+  unClickedAccordions.forEach(accordionItem => {
+    const accordionHeader = accordionItem.children[0]
+    const accordionBody = accordionItem.children[1]
+
+    accordionHeader.classList.remove('active')
+    accordionBody.classList.remove('active')
+  })
+}
+
+const showAccordionItem = accordionItem => {
+
+  closeAccordionsExcept(accordionItem)
+
+  const accordionHeader = accordionItem.children[0]
+  const accordionBody = accordionItem.children[1]
+
+  accordionHeader.classList.toggle('active')
+  accordionBody.classList.toggle('active')
+}
+
+const setAccordionItemClickEvent = accordionItem => {
+  accordionItem.addEventListener('click', () => showAccordionItem(accordionItem))
+}
+
+accordionItems.forEach(setAccordionItemClickEvent)
 
 /*
   03
