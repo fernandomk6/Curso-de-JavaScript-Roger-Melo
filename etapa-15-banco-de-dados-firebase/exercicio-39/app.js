@@ -47,32 +47,38 @@ const sum = (...numbers) => numbers.reduce(addNumberTo, 0)
 
 const accordionItems = Array.from(document.querySelectorAll('.accordion-item'))
 
-const closeAccordionsExcept = targetAccordionItem => {
-  const unClickedAccordions = accordionItems.filter(accordionItem => accordionItem !== targetAccordionItem)
+const isAccordionItem = element => element.classList.contains('accordion-item')
 
-  unClickedAccordions.forEach(accordionItem => {
-    const accordionHeader = accordionItem.children[0]
-    const accordionBody = accordionItem.children[1]
+const closeAccordionItem = accordionItem => {
+  const [ accordionHeader, accordionBody ] = accordionItem.children
 
-    accordionHeader.classList.remove('active')
-    accordionBody.classList.remove('active')
-  })
+  accordionHeader.classList.remove('active')
+  accordionBody.classList.remove('active')
 }
 
-const showAccordionItem = accordionItem => {
-
-  closeAccordionsExcept(accordionItem)
-
-  const accordionHeader = accordionItem.children[0]
-  const accordionBody = accordionItem.children[1]
+const toggleAccordionItem = accordionItem => {
+  const [ accordionHeader, accordionBody ] = accordionItem.children
 
   accordionHeader.classList.toggle('active')
   accordionBody.classList.toggle('active')
 }
 
-const setAccordionItemClickEvent = accordionItem => {
-  accordionItem.addEventListener('click', () => showAccordionItem(accordionItem))
+const closeAccordionsExcept = clickedAccordionItem => {
+  const unClickedAccordions = accordionItems.filter(accordionItem => 
+    accordionItem !== clickedAccordionItem)
+
+  unClickedAccordions.forEach(closeAccordionItem)
 }
+
+const showAccordionItem = event => {
+  const accordionItem = event.composedPath().find(isAccordionItem)
+
+  closeAccordionsExcept(accordionItem)
+  toggleAccordionItem(accordionItem)
+}
+
+const setAccordionItemClickEvent = accordionItem => 
+  accordionItem.addEventListener('click', showAccordionItem)
 
 accordionItems.forEach(setAccordionItemClickEvent)
 
