@@ -98,14 +98,19 @@ accordionItems.forEach(setAccordionItemClickEvent)
     - Teste o método logCarInfo nos dois objetos.
 */
 
+const carMaker = ({ name, color }) => 
+  Object.setPrototypeOf({ name, color }, volkswagenProto)
+
 const volkswagenProto = {
+  constructor: carMaker,
+
   logCarInfo () {
     console.log(`Volkswagen ${this.name}, cor ${this.color}.`)
   }
 }
 
-// const amarok = carMaker({ name: 'Amarok', color: 'preta' })
-// const jetta = carMaker({ name: 'Jetta', color: 'prata' })
+const amarok = carMaker({ name: 'Amarok', color: 'preta' })
+const jetta = carMaker({ name: 'Jetta', color: 'prata' })
 
 /*
   04
@@ -123,7 +128,17 @@ const volkswagenProto = {
 
 const aString = 'O Curso de JavaScript Roger Melo funciona com turmas fechadas, abertas poucas vezes e é focado em quem ainda não é fluente em JS. Ou seja, quem não consegue construir aplicações web com JavaScript puro.'
 
+const getIndexesOfCharacter = (aString, target) => {
+  const aStringAsArray = [ ...aString ]
 
+  return aStringAsArray.reduce((accumulator, character, index) => {
+    if (character === target) {
+      accumulator.push(index)
+    }
+  
+    return accumulator
+  }, [])
+}
 
 // console.log(getIndexesOfCharacter(aString, 'b'))
 
@@ -170,7 +185,40 @@ const aString = 'O Curso de JavaScript Roger Melo funciona com turmas fechadas, 
       ela já tem + 1 e faça characterIndex receber 0.
 */
 
+const typingEl = document.querySelector('[data-js="typing"]')
 
+const phrases = [
+  'sou fluente em JS',
+  'construo aplicações WEB com JS puro'
+]
+
+let letterIndex = 0
+let actualPhrase = phrases[0]
+
+const getRandomPhrase = () => 
+  phrases[Math.round(Math.random() * ((phrases.length - 1) - 0))]
+
+const getActualLetter = actualPhrase => {
+  const letter = actualPhrase[letterIndex]
+  letterIndex++
+
+  return letter
+}
+
+const renderLetter = () => {
+  if (letterIndex > actualPhrase.length - 1) {
+    actualPhrase = getRandomPhrase()
+
+    letterIndex = 0
+    typingEl.textContent = ''
+
+    return 
+  }
+
+  typingEl.textContent += getActualLetter(actualPhrase)
+}
+
+const intervalID = setInterval(renderLetter, 100)
 
 /*
   06
@@ -192,8 +240,6 @@ const wrongDataFormat = [
   'azul-XG',
   'azul-P'
 ]
-
-
 
 /*
   {
