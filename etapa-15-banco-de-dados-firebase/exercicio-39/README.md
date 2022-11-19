@@ -52,3 +52,19 @@ nameIsEqualTo não existe this.targetName. Porem quando ela foi invocada em um
 filter passando o thisArgs e nesse thisArgs o this possúi a propriedade 
 targetName. O this passado no filter foi atribuido ao this usado no callback do
 filter.
+
+## Use spread operator ao invés do método push.
+
+
+```js
+// Ao invés disso:
+let numbers = [1, 2, 3]
+
+numbers.push(4)
+
+// faça isso:
+
+const numbers = [1, 2, 3]
+const numbers2 = [ ...numbers, 4]
+```
+

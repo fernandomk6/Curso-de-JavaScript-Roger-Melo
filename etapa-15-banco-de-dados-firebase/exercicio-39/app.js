@@ -104,8 +104,15 @@ accordionEl.addEventListener('click', handleAccordionElClick)
     - Teste o método logCarInfo nos dois objetos.
 */
 
-const carMaker = ({ name, color }) => 
-  Object.setPrototypeOf({ name, color }, volkswagenProto)
+const carMaker = ({ name, color }, proto) => {
+  const car = Object.create(proto)
+
+  car.name = name
+  car.color = color 
+
+  return car
+}
+
 
 const volkswagenProto = {
   constructor: carMaker,
@@ -115,8 +122,21 @@ const volkswagenProto = {
   }
 }
 
-const amarok = carMaker({ name: 'Amarok', color: 'preta' })
-const jetta = carMaker({ name: 'Jetta', color: 'prata' })
+const toyotaProto = {
+  constructor: carMaker,
+
+  logCarInfo () {
+    console.log(`Toyota ${this.name}, cor ${this.color}.`)
+  }
+}
+
+const amarok = carMaker({ name: 'Amarok', color: 'preta' }, volkswagenProto)
+const jetta = carMaker({ name: 'Jetta', color: 'prata' }, volkswagenProto)
+const corolla = carMaker({ name: 'corolla', color: 'preta' }, toyotaProto)
+
+// amarok.logCarInfo()
+// jetta.logCarInfo()
+// corolla.logCarInfo()
 
 /*
   04
@@ -134,19 +154,24 @@ const jetta = carMaker({ name: 'Jetta', color: 'prata' })
 
 const aString = 'O Curso de JavaScript Roger Melo funciona com turmas fechadas, abertas poucas vezes e é focado em quem ainda não é fluente em JS. Ou seja, quem não consegue construir aplicações web com JavaScript puro.'
 
-const getIndexesOfCharacter = (aString, target) => {
-  const aStringAsArray = [ ...aString ]
-
-  return aStringAsArray.reduce((accumulator, character, index) => {
-    if (character === target) {
-      accumulator.push(index)
-    }
-  
-    return accumulator
-  }, [])
-}
+const getIndexesOfCharacter = (string, character) => 
+  [ ...string ].reduce((acc, item, index) => 
+    character.toLowerCase() === item.toLowerCase() ? [ ...acc, index ] : acc, [])
 
 // console.log(getIndexesOfCharacter(aString, 'b'))
+// console.log(getIndexesOfCharacter(aString, 'o'))
+
+// const getIndexesOfCharacter = (aString, target) => {
+//   const aStringAsArray = [ ...aString ]
+
+//   return aStringAsArray.reduce((accumulator, character, index) => {
+//     if (character === target) {
+//       accumulator.push(index)
+//     }
+  
+//     return accumulator
+//   }, [])
+// }
 
 /*
   05
