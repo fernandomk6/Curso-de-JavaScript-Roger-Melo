@@ -235,9 +235,7 @@ const type = () => {
   }
 
   currentMessage = messages[messageIndex]
-  currentCharacters = currentMessage.slice(0, characterIndex)
-
-  characterIndex++
+  currentCharacters = currentMessage.slice(0, characterIndex++)
 
   typingEl.textContent = currentCharacters
 
