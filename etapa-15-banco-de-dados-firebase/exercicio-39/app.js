@@ -74,7 +74,7 @@ const handleAccordionElClick = event => {
   const previousActiveAccordionBody = accordionBodys
     .find(accordionBody => 
       accordionBody.classList.contains('active') && accordionBody !== clickedAccordionBody)
-      
+
   const activePreviousAccordionExist = previousActiveAccordionHeader && previousActiveAccordionBody
 
   if (activePreviousAccordionExist) {
@@ -193,38 +193,69 @@ const getIndexesOfCharacter = (aString, target) => {
 
 const typingEl = document.querySelector('[data-js="typing"]')
 
-const phrases = [
-  'sou fluente em JS',
-  'construo aplicações WEB com JS puro'
+const messages = [
+  'me chamo Fernando henrique',
+  'sou fluente em JS puro.',
+  'construo aplicações WEB com JS puro.'
 ]
 
-let letterIndex = 0
-let actualPhrase = phrases[0]
+let messageIndex = 0
+let characterIndex = 0
+let currentMessage = ''
+let currentCharacters = ''
 
-const getRandomPhrase = () => 
-  phrases[Math.round(Math.random() * ((phrases.length - 1) - 0))]
-
-const getActualLetter = actualPhrase => {
-  const letter = actualPhrase[letterIndex]
-  letterIndex++
-
-  return letter
-}
-
-const renderLetter = () => {
-  if (letterIndex > actualPhrase.length - 1) {
-    actualPhrase = getRandomPhrase()
-
-    letterIndex = 0
-    typingEl.textContent = ''
-
-    return 
+const type = () => {
+  if (messageIndex > messages.length - 1) {
+    messageIndex = 0
   }
 
-  typingEl.textContent += getActualLetter(actualPhrase)
+  currentMessage = messages[messageIndex]
+  currentCharacters = currentMessage.slice(0, characterIndex)
+
+  characterIndex++
+
+  typingEl.textContent = currentCharacters
+
+  if (currentCharacters.length === currentMessage.length) {
+    messageIndex++
+    characterIndex = 0
+  }
 }
 
-// const intervalID = setInterval(renderLetter, 100)
+setInterval(type, 200)
+
+// const phrases = [
+//   'sou fluente em JS.',
+//   'construo aplicações WEB com JS puro.'
+// ]
+
+// let letterIndex = 0
+// let actualPhrase = phrases[0]
+
+// const getRandomPhrase = () => 
+//   phrases[Math.round(Math.random() * ((phrases.length - 1) - 0))]
+
+// const getActualLetter = actualPhrase => {
+//   const letter = actualPhrase[letterIndex]
+//   letterIndex++
+
+//   return letter
+// }
+
+// const renderLetter = () => {
+//   if (letterIndex > actualPhrase.length - 1) {
+//     actualPhrase = getRandomPhrase()
+
+//     letterIndex = 0
+//     typingEl.textContent = ''
+
+//     return 
+//   }
+
+//   typingEl.textContent += getActualLetter(actualPhrase)
+// }
+
+// const intervalID = setInterval(renderLetter, 300)
 
 /*
   06
@@ -246,6 +277,40 @@ const wrongDataFormat = [
   'azul-XG',
   'azul-P'
 ]
+
+const result = wrongDataFormat.reduce((acc, item) => {
+  const propName = item.split('-')[0]
+  const value = item.split('-')[1]
+  const propExist = acc[propName]
+
+  if (propExist) {
+    const valueExist = acc[propName][value]
+
+    if (valueExist) {
+      acc[propName][value] += 1
+      return acc
+
+    } else {
+      acc[propName] =  {
+       ...acc[propName],
+       [value]: 1
+      }
+      
+      return acc
+    }
+  } 
+
+  acc = {
+    ...acc,
+    [propName]: {
+      [value]: 1
+    } 
+  }
+
+  return acc
+}, {})
+
+console.log(result)
 
 /*
   {
