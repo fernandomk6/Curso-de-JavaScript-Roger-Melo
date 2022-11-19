@@ -278,58 +278,28 @@ const wrongDataFormat = [
   'azul-P'
 ]
 
-const result = wrongDataFormat.reduce((acc, item) => {
-  const propName = item.split('-')[0]
-  const value = item.split('-')[1]
-  const propExist = acc[propName]
-
-  if (propExist) {
-    const valueExist = acc[propName][value]
-
-    if (valueExist) {
-      acc[propName][value] += 1
-      return acc
-
-    } else {
-      acc[propName] =  {
-       ...acc[propName],
-       [value]: 1
-      }
-      
-      return acc
+const getConvertedWrongDataFormat = wrongDataFormat => wrongDataFormat.reduce((acc, item) => {
+  const [ color, size ] = item.split('-')
+  const colorPropertyExist = acc.hasOwnProperty(color)
+  const sizePropertyExist = acc[color]?.hasOwnProperty(size)
+  
+  if (colorPropertyExist && sizePropertyExist) {
+    acc[color] = {
+      ...acc[color],
+      [size]: acc[color][size] + 1
     }
-  } 
-
-  acc = {
-    ...acc,
-    [propName]: {
-      [value]: 1
-    } 
+  } else {
+    acc[color] = {
+      ...acc[color],
+      [size]: 1
+    }
   }
 
   return acc
 }, {})
 
-console.log(result)
+const convertedWrongDataFormat = getConvertedWrongDataFormat(wrongDataFormat)
 
-/*
-  {
-    preto: {
-      PP: 1,
-      M: 1,
-      G: 1,
-      GG: 2
-    },
-    branco: {
-      PP: 1,
-      G: 1
-    },
-    vermelho: {
-      M: 1
-    },
-    azul: {
-      XG: 3,
-      P: 1
-    }
-  }
-*/
+console.log(convertedWrongDataFormat)
+
+
