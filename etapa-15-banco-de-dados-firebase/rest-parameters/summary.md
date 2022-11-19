@@ -63,3 +63,31 @@ function multiply(multiplier, ...theArgs) {
 var arr = multiply(2, 1, 2, 3);
 console.log(arr); // [2, 4, 6]
 ```
+
+## Rest parameters e destructuring
+
+Rest parameters também pode ser usado em destructuring.
+
+Exemplos:
+
+```js
+const arr = [1, 2, 3]
+const [a, ...b] = arr
+
+// a => 1
+// b => [2, 3]
+
+const obj = {
+  x: 1, 
+  y: 2,
+  z: 3
+}
+
+const { x, ...f } = obj 
+// Quando usar rest, o nome da const não precisa ser
+// o mesmo nome de uma propriedade
+
+// x => 1
+// f => { y: 2, z: 3 }
+
+```

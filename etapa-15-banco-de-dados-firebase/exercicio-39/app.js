@@ -42,45 +42,51 @@ const sum = (...numbers) => numbers.reduce(addNumberTo, 0)
     utilizando a classe "active".
 */
 
-// clicar abre se clicar de novo fecha
-// quando um abre todos os outros fecham
+const accordionEl = document.querySelector('[data-js="accordion"]')
 
-const accordionItems = Array.from(document.querySelectorAll('.accordion-item'))
+const handleAccordionElClick = event => {
+  const clickedElement = event.target 
+  const accordionId = clickedElement.dataset.accordionId
+  const clickedElementIsAbody = clickedElement.dataset.js === "accordion-body"
 
-const isAccordionItem = element => element.classList.contains('accordion-item')
+  if (!accordionId || clickedElementIsAbody) {
+    return
+  }
 
-const closeAccordionItem = accordionItem => {
-  const [ accordionHeader, accordionBody ] = accordionItem.children
+  const accordionHeaders = Array
+    .from(accordionEl.querySelectorAll('[data-js="accordion-header"]'))
 
-  accordionHeader.classList.remove('active')
-  accordionBody.classList.remove('active')
+  const accordionBodys = Array
+    .from(accordionEl.querySelectorAll('[data-js="accordion-body"]'))
+
+  const clickedAccordionHeader = accordionHeaders
+    .find(clickedAccordionHeader => 
+      clickedAccordionHeader.dataset.accordionId === accordionId)
+
+  const clickedAccordionBody = accordionBodys
+    .find(clickedAccordionBody => 
+      clickedAccordionBody.dataset.accordionId === accordionId)
+
+  const previousActiveAccordionHeader = accordionHeaders
+    .find(accordionHeader => 
+      accordionHeader.classList.contains('active') && accordionHeader !== clickedAccordionHeader)
+
+  const previousActiveAccordionBody = accordionBodys
+    .find(accordionBody => 
+      accordionBody.classList.contains('active') && accordionBody !== clickedAccordionBody)
+      
+  const activePreviousAccordionExist = previousActiveAccordionHeader && previousActiveAccordionBody
+
+  if (activePreviousAccordionExist) {
+    previousActiveAccordionHeader.classList.remove('active')
+    previousActiveAccordionBody.classList.remove('active')
+  }
+
+  clickedAccordionHeader.classList.toggle('active')
+  clickedAccordionBody.classList.toggle('active')
 }
 
-const toggleAccordionItem = accordionItem => {
-  const [ accordionHeader, accordionBody ] = accordionItem.children
-
-  accordionHeader.classList.toggle('active')
-  accordionBody.classList.toggle('active')
-}
-
-const closeAccordionsExcept = clickedAccordionItem => {
-  const unClickedAccordions = accordionItems.filter(accordionItem => 
-    accordionItem !== clickedAccordionItem)
-
-  unClickedAccordions.forEach(closeAccordionItem)
-}
-
-const showAccordionItem = event => {
-  const accordionItem = event.composedPath().find(isAccordionItem)
-
-  closeAccordionsExcept(accordionItem)
-  toggleAccordionItem(accordionItem)
-}
-
-const setAccordionItemClickEvent = accordionItem => 
-  accordionItem.addEventListener('click', showAccordionItem)
-
-accordionItems.forEach(setAccordionItemClickEvent)
+accordionEl.addEventListener('click', handleAccordionElClick)
 
 /*
   03
@@ -218,7 +224,7 @@ const renderLetter = () => {
   typingEl.textContent += getActualLetter(actualPhrase)
 }
 
-const intervalID = setInterval(renderLetter, 100)
+// const intervalID = setInterval(renderLetter, 100)
 
 /*
   06
