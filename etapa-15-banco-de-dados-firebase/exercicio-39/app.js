@@ -301,28 +301,41 @@ const wrongDataFormat = [
   'azul-P'
 ]
 
-const getConvertedWrongDataFormat = wrongDataFormat => wrongDataFormat.reduce((acc, item) => {
-  const [ color, size ] = item.split('-')
-  const colorPropertyExist = acc.hasOwnProperty(color)
-  const sizePropertyExist = acc[color]?.hasOwnProperty(size)
+// const getConvertedWrongDataFormat = wrongDataFormat => wrongDataFormat.reduce((acc, item) => {
+//   const [ color, size ] = item.split('-')
+//   const colorPropertyExist = acc.hasOwnProperty(color)
+//   const sizePropertyExist = acc[color]?.hasOwnProperty(size)
   
-  if (colorPropertyExist && sizePropertyExist) {
-    acc[color] = {
-      ...acc[color],
-      [size]: acc[color][size] + 1
-    }
-  } else {
-    acc[color] = {
-      ...acc[color],
-      [size]: 1
-    }
-  }
+//   if (colorPropertyExist && sizePropertyExist) {
+//     acc[color] = {
+//       ...acc[color],
+//       [size]: acc[color][size] + 1
+//     }
+//   } else {
+//     acc[color] = {
+//       ...acc[color],
+//       [size]: 1
+//     }
+//   }
+
+//   return acc
+// }, {})
+
+// const convertedWrongDataFormat = getConvertedWrongDataFormat(wrongDataFormat)
+
+// console.log(convertedWrongDataFormat)
+
+const correctDataFormat = wrongDataFormat.reduce((acc, colorAndSize) => {
+  const  [ color, size ] = colorAndSize.split('-')
+
+  acc[color] = acc[color] || {}
+  acc[color][size] = acc[color][size] || 0
+  acc[color][size] += 1
 
   return acc
 }, {})
 
-const convertedWrongDataFormat = getConvertedWrongDataFormat(wrongDataFormat)
+console.log(correctDataFormat)
 
-console.log(convertedWrongDataFormat)
 
 
