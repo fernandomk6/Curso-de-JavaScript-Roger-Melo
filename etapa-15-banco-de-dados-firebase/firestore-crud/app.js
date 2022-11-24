@@ -78,19 +78,3 @@ gamesList.addEventListener('click', (event) => {
       })
   }
 })
-
-
-const re3 = doc(db, 'games', 're')
-
-setDoc(re3, {
-  title: 'Resident Evil 3'
-}, { merge: true })
-  .then((result) => {
-    console.log('Game atualizado', result)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-
-
-
