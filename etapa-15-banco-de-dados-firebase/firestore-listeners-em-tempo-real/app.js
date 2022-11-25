@@ -38,12 +38,12 @@ const buildGameItemTemplate = (id, title, developedBy, createdAt) => {
   createdAt = formatDate(createdAt)
 
   return `
-    <li data-id="${doc.id}" class="my-5">
+    <li data-id="${id}" class="my-5">
       <h5>${title}</h5>
       <ul>
         <li>Desenvolvidor por ${developedBy}</li>
         <li>Criado no banco em ${createdAt}</li>
-        <button data-remove="${doc.id}" class="btn btn-danger btn-sm">Remover</button>
+        <button data-remove="${id}" class="btn btn-danger btn-sm">Remover</button>
       </ul>
     </li>
   `
