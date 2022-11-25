@@ -50,7 +50,8 @@ const buildGameItemTemplate = (id, title, developedBy, createdAt) => {
 }
 
 const buildListGameTemplate = (doc) => {
-  const { id, title, developedBy, createdAt } = doc.data() 
+  const { title, developedBy, createdAt } = doc.data() 
+  const id = doc.id
 
   return buildGameItemTemplate(id, title, developedBy, createdAt)
 }
