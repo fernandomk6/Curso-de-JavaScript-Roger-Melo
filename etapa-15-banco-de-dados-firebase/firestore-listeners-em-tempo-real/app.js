@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"
-import { getFirestore, collection, getDocs, addDoc, serverTimestamp, doc, deleteDoc, updateDoc, setDoc } from 'https://www.gstatic.com/firebasejs/9.0.1/firebase-firestore.js'
+import { getFirestore, collection, addDoc, serverTimestamp, doc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.0.1/firebase-firestore.js'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAAiOndsiORYtRUNX7d97dr2_FUVI7m7ys",
@@ -14,34 +14,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-const gamesList = document.querySelector('[data-js="games-list"]')
-const formAddGame = document.querySelector('[data-js="add-game-form"]')
-
 const collectionGames = collection(db, 'games')
 
-getDocs(collectionGames)
-  .then((querySnapshot) => {
+const gamesList = document.querySelector('[data-js="games-list"]')
+const formAddGame = document.querySelector('[data-js="add-game-form"]')
+const buttonUnsub = document.querySelector('[data-js="unsub"]')
+
+const unSubscribe = onSnapshot(collectionGames, (querySnapshot) => {
+  if (!querySnapshot.metadata.hasPendingWrites) {
     const gamesListItems = querySnapshot.docs.map((doc) => {
       const { title, developedBy, createdAt } = doc.data() 
-
+  
       return `<li data-id="${doc.id}" class="my-5">
         <h5>${title}</h5>
-
+  
         <ul>
           <li>Desenvolvidor por ${developedBy}</li>
-          <li>Adicionado no banco em ${createdAt.toDate()}</li>
+          <li>Criado no banco em ${createdAt.toDate()}</li>
+          
           
           <button data-remove="${doc.id}" class="btn btn-danger btn-sm">Remover</button>
         </ul>
       </li>`
-      })
-      .join('')
-    
+    })
+    .join('')
+  
     gamesList.innerHTML = gamesListItems
-  })
-  .catch((error) => {
-    console.log(error)
-  })
+  }
+})
 
 formAddGame.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -55,7 +55,7 @@ formAddGame.addEventListener('submit', (event) => {
     createdAt: serverTimestamp()
   })
     .then((doc) => {
-      console.log('Documento adicionado com sucesso', doc)
+      console.log('Documento adicionado com sucesso', doc.id)
     })
     .catch((error) => {
       console.log(error)
@@ -68,9 +68,6 @@ gamesList.addEventListener('click', (event) => {
   if (idRemoveButton) {
     deleteDoc(doc(db, 'games', idRemoveButton))
       .then(() => {
-        const game = document.querySelector(`[data-id="${idRemoveButton}"]`)
-        game.remove()
-
         console.log('Game removido com sucesso')
       })
       .catch((error) => {
@@ -78,3 +75,5 @@ gamesList.addEventListener('click', (event) => {
       })
   }
 })
+
+buttonUnsub.addEventListener('click', unSubscribe)
