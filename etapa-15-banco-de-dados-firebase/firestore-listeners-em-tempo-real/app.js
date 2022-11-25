@@ -20,72 +20,88 @@ const gamesList = document.querySelector('[data-js="games-list"]')
 const formAddGame = document.querySelector('[data-js="add-game-form"]')
 const buttonUnsub = document.querySelector('[data-js="unsub"]')
 
-const unSubscribe = onSnapshot(collectionGames, (querySnapshot) => {
-  if (!querySnapshot.metadata.hasPendingWrites) {
-    const gamesListItems = querySnapshot.docs.map((doc) => {
-      const { title, developedBy, createdAt } = doc.data() 
-
-      const options = {
-        year: 'numeric', month: 'numeric', day: 'numeric',
-        hour: 'numeric', minute: 'numeric', second: 'numeric',
-        hour12: false,
-        timeZone: 'America/Sao_Paulo'
-      }
-
-      const createdAtDate = Intl.DateTimeFormat('pt-BR', options).format(createdAt.toDate())
-        .split('')
-        .slice(0, -3)
-        .join('')
-  
-      return `<li data-id="${doc.id}" class="my-5">
-        <h5>${title}</h5>
-  
-        <ul>
-          <li>Desenvolvidor por ${developedBy}</li>
-          <li>Criado no banco em ${createdAtDate}</li>
-          
-          
-          <button data-remove="${doc.id}" class="btn btn-danger btn-sm">Remover</button>
-        </ul>
-      </li>`
-    })
-    .join('')
-  
-    gamesList.innerHTML = gamesListItems
+const formatDate = (date) => {
+  const options = {
+    year: 'numeric', month: 'numeric', day: 'numeric',
+    hour: 'numeric', minute: 'numeric', second: 'numeric',
+    hour12: false,
+    timeZone: 'America/Sao_Paulo'
   }
-})
 
-formAddGame.addEventListener('submit', (event) => {
+  return Intl.DateTimeFormat('pt-BR', options).format(date.toDate())
+    .split('')
+    .slice(0, -3)
+    .join('')
+}
+
+const buildGameItemTemplate = (id, title, developedBy, createdAt) => {
+  createdAt = formatDate(createdAt)
+
+  return `<li data-id="${doc.id}" class="my-5">
+    <h5>${title}</h5>
+    <ul>
+      <li>Desenvolvidor por ${developedBy}</li>
+      <li>Criado no banco em ${createdAt}</li>
+      <button data-remove="${doc.id}" class="btn btn-danger btn-sm">Remover</button>
+    </ul>
+  </li>`
+}
+
+const buildListGameTemplate = (doc) => {
+  const { id, title, developedBy, createdAt } = doc.data() 
+
+  return buildGameItemTemplate(id, title, developedBy, createdAt)
+}
+
+const gamesRefresh = (querySnapshot) => {
+  if (querySnapshot.metadata.hasPendingWrites) {
+    return
+  }
+  
+  const gamesListItems = querySnapshot.docs
+    .map(buildListGameTemplate)
+    .join('')
+
+  gamesList.innerHTML = gamesListItems
+}
+
+const addGame = async (event) => {
   event.preventDefault()
   
   const title = event.target.title.value 
-  const developer = event.target.developer.value 
+  const developedBy = event.target.developer.value 
 
-  addDoc(collectionGames, {
-    title,
-    developedBy: developer,
-    createdAt: serverTimestamp()
-  })
-    .then((doc) => {
-      console.log('Documento adicionado com sucesso', doc.id)
+  try {
+    await addDoc(collectionGames, {
+      title,
+      developedBy,
+      createdAt: serverTimestamp()
     })
-    .catch((error) => {
-      console.log(error)
-    })
-})
 
-gamesList.addEventListener('click', (event) => {
+    formAddGame.reset()
+    formAddGame.title.focus()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const removeGame = async (event) => {
   const idRemoveButton = event.target.dataset.remove 
 
-  if (idRemoveButton) {
-    deleteDoc(doc(db, 'games', idRemoveButton))
-      .then(() => {
-        console.log('Game removido com sucesso')
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  if (!idRemoveButton) {
+    return
   }
-})
 
+  try {
+    await deleteDoc(doc(db, 'games', idRemoveButton))
+    console.log('Game removido com sucesso')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const unSubscribe = onSnapshot(collectionGames, gamesRefresh)
+
+formAddGame.addEventListener('submit', addGame)
+gamesList.addEventListener('click', removeGame)
 buttonUnsub.addEventListener('click', unSubscribe)
