@@ -5,8 +5,7 @@
   valores no console no decorrer dessa bateria de exercícios.
 */
 
-const log = (...values) => values.forEach((value) => 
-  console.log(value))
+const log = (...values) => console.log(...values)
 
 /*
   02
@@ -17,11 +16,9 @@ const log = (...values) => values.forEach((value) =>
     multi-linha abaixo.
 */
 
-const removeProp = (propToRemove, objs) => objs.map((obj) => {
-  const { [propToRemove]: valueToRemove, ...restProps } = obj 
-
-  return { ...restProps }
-})
+const removeProp = (propToRemove, objs) => 
+  objs.map(({ [propToRemove]: _, ...remainingProps }) => 
+    ({ ...remainingProps }))
 
 
 const objs = [
@@ -68,22 +65,20 @@ const orders = [
   { username: '_rick', status: 'shipped', price: 73.65 }
 ]
 
-const getStatusCount = (orders) => orders
-  .reduce((acc, item) => { 
-    acc[item.status] = acc[item.status] || 0
-    acc[item.status]++
+// const getStatusCount = orders => 
+//   orders.reduce((acc, { status }) => { 
+//     acc[status] = (acc[status] || 0) + 1
+//     return acc
+//   }, {})
 
-    return acc
-  }, {})
-
-// const getStatusCount = (orders) => orders
-//   .reduce((acc, item) => ({
-//     ...acc,
-//     [item.status]: acc[item.status] ? acc[item.status] + 1 : 1
-//   }), {})
+const getStatusCount = (orders) => 
+  orders.reduce((acc, { status }) => ({ 
+    ...acc, 
+    [status]: (acc[status] || 0) + 1 
+  }), {})
 
 
-// console.log(getStatusCount(orders))
+console.log(getStatusCount(orders))
 
 /*
 {

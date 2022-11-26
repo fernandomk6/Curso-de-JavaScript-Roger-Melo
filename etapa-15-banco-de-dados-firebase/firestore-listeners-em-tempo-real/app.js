@@ -22,29 +22,28 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
-
 const collectionGames = collection(db, 'games')
 
 const gamesList = document.querySelector('[data-js="games-list"]')
 const formAddGame = document.querySelector('[data-js="add-game-form"]')
 const buttonUnsub = document.querySelector('[data-js="unsub"]')
 
-const formatDate = (date) => {
+const to = (promise) => promise
+  .then((result) => [null, result])
+  .catch((error) => [error])
+
+
+const getFormattedDate = (date) => {
   const options = {
-    year: 'numeric', month: 'numeric', day: 'numeric',
-    hour: 'numeric', minute: 'numeric', second: 'numeric',
-    hour12: false,
-    timeZone: 'America/Sao_Paulo'
+    dateStyle: 'short',
+    timeStyle: 'short'
   }
 
   return Intl.DateTimeFormat('pt-BR', options).format(date.toDate())
-    .split('')
-    .slice(0, -3)
-    .join('')
 }
 
 const buildGameItemTemplate = (id, title, developedBy, createdAt) => {
-  createdAt = formatDate(createdAt)
+  createdAt = getFormattedDate(createdAt)
 
   return `
     <li data-id="${id}" class="my-5">
@@ -59,13 +58,11 @@ const buildGameItemTemplate = (id, title, developedBy, createdAt) => {
 }
 
 const buildListGameTemplate = (doc) => {
-  const { title, developedBy, createdAt } = doc.data() 
-  const id = doc.id
-
+  const [ id, { title, developedBy, createdAt }] = [ doc.id, doc.data() ]
   return buildGameItemTemplate(id, title, developedBy, createdAt)
 }
 
-const gamesRefresh = (querySnapshot) => {
+const renderGamesList = (querySnapshot) => {
   if (querySnapshot.metadata.hasPendingWrites) {
     return
   }
@@ -83,18 +80,18 @@ const addGame = async (event) => {
   const title = event.target.title.value 
   const developedBy = event.target.developer.value 
 
-  try {
-    await addDoc(collectionGames, {
-      title,
-      developedBy,
-      createdAt: serverTimestamp()
-    })
+  const [ error ] = await to(addDoc(collectionGames, {
+    title,
+    developedBy,
+    createdAt: serverTimestamp()
+  }))
 
-    formAddGame.reset()
-    formAddGame.title.focus()
-  } catch (error) {
-    console.log(error)
+  if (error) {
+    return console.log(error)
   }
+
+  event.target.reset()
+  event.target.title.focus()
 }
 
 const removeGame = async (event) => {
@@ -104,16 +101,19 @@ const removeGame = async (event) => {
     return
   }
 
-  try {
-    await deleteDoc(doc(db, 'games', idRemoveButton))
-    console.log('Game removido com sucesso')
-  } catch (error) {
-    console.log(error)
+  const [ error ] = await to(deleteDoc(doc(db, 'games', idRemoveButton)))
+
+  if (error) {
+    return console.log(error)
   }
+
+  console.log('Game removido com sucesso')
 }
 
-const unSubscribe = onSnapshot(collectionGames, gamesRefresh)
+const handleErrorOnSnapshot = error => console.log(error)
 
+
+const unSubscribe = onSnapshot(collectionGames, renderGamesList, handleErrorOnSnapshot)
 formAddGame.addEventListener('submit', addGame)
 gamesList.addEventListener('click', removeGame)
 buttonUnsub.addEventListener('click', unSubscribe)
