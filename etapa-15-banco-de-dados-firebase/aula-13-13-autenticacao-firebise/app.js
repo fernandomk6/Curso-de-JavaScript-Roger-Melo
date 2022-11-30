@@ -1,0 +1,1 @@
+console.log('autenticação no Firebase')
