@@ -12,7 +12,7 @@ DOMElement.innerHTML = `
 
 A seguinte string quando renderizada como HTML iria tentar renderizar uma imagem que tenha
 o sourche "x". Como "x" naão é um source válido um erro foi gerado. Quando o erro foi gerado
-o evento onerror foi disparado, iniciando o ataque.
+o evento one rror foi disparado, iniciando o ataque.
 
 O que pode ser usado ao invés de innerHTML?
 
