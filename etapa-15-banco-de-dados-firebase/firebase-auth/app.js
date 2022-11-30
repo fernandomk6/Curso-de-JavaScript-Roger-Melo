@@ -1,1 +1,1 @@
-console.log('autenticação no Firebase')
+console.log('firebase auth')
