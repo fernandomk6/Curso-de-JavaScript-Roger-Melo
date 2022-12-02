@@ -1073,3 +1073,410 @@ As intances possuem 3 métodos
 | options |	Object | The options the instance was initialized with. |
 | isOpen	| Boolean	| Describes open/close state of the FAB. |
 
+### Footer
+
+Nota: Usamos o flexbox para estruturar nosso html para que o rodapé fique 
+sempre no final da página. É importante manter a estrutura da sua página 
+dentro das 3 tags HTML5: header, main, footer.
+
+```html
+<footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col l6 s12">
+        <h5 class="white-text">Footer Content</h5>
+        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+      </div>
+      <div class="col l4 offset-l2 s12">
+        <h5 class="white-text">Links</h5>
+        <ul>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+    © 2014 Copyright Text
+    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+    </div>
+  </div>
+</footer>
+```
+
+O component footer se caracteriza por uma tag footer contendo a class `page-footer`.
+Essa div deve ter um `container` div e também uma div com a class `footer-copyright`
+como filhos.
+
+Dentro das divs container qualquer conteúdo pode ser especificado, use as classes
+`row`, `col` e etc.
+
+#### Sticky Foote
+
+Um rodapé fixo sempre fica na parte inferior da página, independentemente de 
+quão pouco conteúdo esteja na página. No entanto, esse rodapé será empurrado 
+para baixo se houver muito conteúdo, por isso é diferente de um rodapé fixo. 
+Adicione o seguinte código ao seu arquivo CSS.
+
+### Navbar
+
+A barra de navegação é totalmente contida por uma tag HTML5 Nav. 
+Dentro de um `container` div recomendado, existem 2 partes principais da barra de navegação. 
+Um logotipo ou link da marca e os links de navegação. 
+Você pode alinhar esses links à esquerda ou à direita.
+
+```html
+<nav>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo">Logo</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a href="sass.html">Sass</a></li>
+      <li><a href="badges.html">Components</a></li>
+      <li><a href="collapsible.html">JavaScript</a></li>
+    </ul>
+  </div>
+</nav>
+```
+
+- O componente tem o pai a tag nav
+- Dentro da tag nav vem uma div com a class `nav-wrapper`
+- Dentro dele vem duas principais tags
+- Tag a com class `brand-logo` que conterá a logo
+- Uma ul com links.
+- A ul e o a, podem ser movimentados usando `left` e `right` float class.
+- O a com class `brand-logo` possui position absolute, por esse motivo é necessário setar um float
+no a ou na ul, para que ambos não fiquem sobrepostos ou em colunas.
+
+#### Centering the logo
+
+É possível centralizar a logo, basta colocar a class `center` no `brand-logo`.
+
+**Set a class `hide-on-med-and-down` na ul para que ela não fique visivel em telas pequenas**.
+
+#### Active Items
+
+É possível deixar um link da navbar como ativo, basta adicionar a class `active`
+a uma das li.
+
+É sempre, antes da `nav-wrapper`, coloque um `container`.
+
+```html
+<header>
+  <nav>
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="" class="brand-logo">Materialize</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="">Home</a></li>
+          <li><a href="">Clientes</a></li>
+          <li class="active"><a href="">Contatos</a></li>
+          <li><a href="">Opções</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+```
+
+#### Extendendo a navbar com abas
+
+```html
+  <nav class="nav-extended">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="sass.html">Sass</a></li>
+        <li><a href="badges.html">Components</a></li>
+        <li><a href="collapsible.html">JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="#test1">Test 1</a></li>
+        <li class="tab"><a class="active" href="#test2">Test 2</a></li>
+        <li class="tab disabled"><a href="#test3">Disabled Tab</a></li>
+        <li class="tab"><a href="#test4">Test 4</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="sass.html">Sass</a></li>
+    <li><a href="badges.html">Components</a></li>
+    <li><a href="collapsible.html">JavaScript</a></li>
+  </ul>
+
+  <div id="test1" class="col s12">Test 1</div>
+  <div id="test2" class="col s12">Test 2</div>
+  <div id="test3" class="col s12">Test 3</div>
+  <div id="test4" class="col s12">Test 4</div>
+```
+
+Para que o código acima funcione, o elemento tabs precisa ser inicializado
+com o javascript.
+
+```js
+var instance = M.Tabs.init(document.querySelector('.tabs')); // inicia as tabs
+
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.sidenav');
+  var instances = M.Sidenav.init(elems);
+}); // inicia a side bar
+```
+
+#### Fixed navbar
+
+```html
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo">Logo</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="sass.html">Sass</a></li>
+        <li><a href="badges.html">Components</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+```
+
+Basta adicionar esse código para ter uma navbar fixa.
+
+#### navbar dropdown menu
+
+Para adicionar um menu suspenso da barra de navegação, adicione a 
+estrutura suspensa ul à página. Em seguida, adicione um elemento 
+para acionar o menu suspenso. Certifique-se de fornecer o id da 
+estrutura suspensa para o atributo data-target do gatilho suspenso.
+
+```html
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#!">one</a></li>
+  <li><a href="#!">two</a></li>
+  <li class="divider"></li>
+  <li><a href="#!">three</a></li>
+</ul>
+<nav>
+  <div class="nav-wrapper">
+    <a href="#!" class="brand-logo">Logo</a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="sass.html">Sass</a></li>
+      <li><a href="badges.html">Components</a></li>
+      <!-- Dropdown Trigger -->
+      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+    </ul>
+  </div>
+</nav>
+```
+
+O dropdown precisa ser instanciado com o js abaixo.
+
+```js
+  var dropdowntriggers = document.querySelectorAll('.dropdown-trigger');
+  var dropdowntriggersInstances = M.Dropdown.init(dropdowntriggers, {
+    coverTrigger: false
+  });
+```
+
+#### Halfway FAB in Extended Navbar
+
+Um bottão com a class `halfway-fab` ficará alinhado ao final do container pela metade
+a direita. Pode ser usado em `nex-extended` dentro da `nav-content`.
+
+```html
+<nav class="nav-extended">
+  <div class="nav-wrapper">
+    <a href="#!" class="brand-logo">Logo</a>
+    <ul class="right hide-on-med-and-down">
+      <li><a>A link</a></li>
+      <li><a>A second link</a></li>
+      <li><a>A third link</a></li>
+    </ul>
+  </div>
+  <div class="nav-content">
+    <span class="nav-title">Title</span>
+    <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
+      <i class="material-icons">add</i>
+    </a>
+  </div>
+</nav>
+```
+
+#### Search Bar
+
+```html
+<nav>
+  <div class="nav-wrapper">
+    <form>
+      <div class="input-field">
+        <input id="search" type="search" required>
+        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form>
+  </div>
+</nav>
+```
+
+#### Mobile collapse button
+
+```html
+<nav>
+  <div class="nav-wrapper">
+    <a href="#!" class="brand-logo">Logo</a>
+    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="sass.html">Sass</a></li>
+      <li><a href="badges.html">Components</a></li>
+      <li><a href="collapsible.html">Javascript</a></li>
+      <li><a href="mobile.html">Mobile</a></li>
+    </ul>
+  </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+  <li><a href="sass.html">Sass</a></li>
+  <li><a href="badges.html">Components</a></li>
+  <li><a href="collapsible.html">Javascript</a></li>
+  <li><a href="mobile.html">Mobile</a></li>
+</ul>
+```
+
+### Pagination
+
+```html
+<ul class="pagination">
+  <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+  <li class="active"><a href="#!">1</a></li>
+  <li class="waves-effect"><a href="#!">2</a></li>
+  <li class="waves-effect"><a href="#!">3</a></li>
+  <li class="waves-effect"><a href="#!">4</a></li>
+  <li class="waves-effect"><a href="#!">5</a></li>
+  <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+</ul>
+```
+
+### Preloader
+
+#### Linear
+
+Existem alguns tipos diferentes de barras de progresso lineares.
+
+##### Determinate 
+
+```html
+<div class="progress">
+    <div class="determinate" style="width: 70%"></div>
+</div>
+```
+
+##### Indeterminate
+
+
+```html
+<div class="progress">
+    <div class="indeterminate"></div>
+</div>
+```
+
+#### Circular
+
+Existem 4 cores e 3 tamanhos de giradores circulares. O controle giratório deve 
+ser aninhado em um div pré-carregador-wrapper. O tamanho padrão é médio, mas 
+você pode adicionar classes grandes ou pequenas para ajustar o tamanho de acordo. 
+Você pode adicionar as classes spinner-red-only, spinner-blue-only, 
+spinner-yellow-only e spinner-green-only. Você também pode deixar esta classe 
+apenas como spinner-layer e ela será definida como a variável $spinner-default-color 
+em nosso arquivo variables.scss.
+
+```html
+<div class="preloader-wrapper big active">
+  <div class="spinner-layer spinner-blue-only">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+</div>
+
+<div class="preloader-wrapper active">
+  <div class="spinner-layer spinner-red-only">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+</div>
+
+<div class="preloader-wrapper small active">
+  <div class="spinner-layer spinner-green-only">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+</div>
+```
+
+#### Circular Flashing Colors
+
+```html
+<div class="preloader-wrapper big active">
+  <div class="spinner-layer spinner-blue">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+
+  <div class="spinner-layer spinner-red">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+
+  <div class="spinner-layer spinner-yellow">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+
+  <div class="spinner-layer spinner-green">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+</div>
+```
+
+
+
+
