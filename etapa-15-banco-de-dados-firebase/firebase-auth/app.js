@@ -8,7 +8,6 @@ const init = () => {
   M.AutoInit()
 }
 
-
 loginBtn.addEventListener('click', login)
 
 init()
