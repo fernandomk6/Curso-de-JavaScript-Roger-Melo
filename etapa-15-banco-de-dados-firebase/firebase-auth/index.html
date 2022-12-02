@@ -5,10 +5,48 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Firebase auth</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 <body>
-  <h1>Firebase auth</h1>
+  <header>
 
+    <div class="navbar-fixed">
+      <nav>
+        <div class="container">
+          <div class="nav-wrapper">
+            <a href="/" class="brand-logo">Frases de filmes</a>
+            <button href="#" data-target="mobile-demo" class="sidenav-trigger btn-flat white-text"><i class="material-icons">menu</i></button>
+            <ul class="right hide-on-med-and-down">
+              <li><a href="#login-modal" class="modal-trigger">Login</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  
+    <ul class="sidenav" id="mobile-demo">
+      <li><a href="#login-modal" class="modal-trigger">Login</a></li>
+    </ul>
+
+  </header>
+  <main>
+
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <h4>Login</h4>
+        <p>Entre com sua conta google para ver suaas frases de filmes.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="login-btn" class="modal-close waves-effect waves-green btn-flat red white-text">Entrar com google</button>
+      </div>
+    </div>
+
+    <p class="center-align flow-text">Faça login para ver as frases</p>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
