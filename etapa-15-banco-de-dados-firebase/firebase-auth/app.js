@@ -23,8 +23,10 @@ const login = () => {
       const credential = GoogleAuthProvider.credentialFromResult(result)
       const token = credential.accessToken
       const user = result.user
+      
       console.log(user)
       console.log('logou')
+
     }).catch((error) => {
       const errorCode = error.code
       const errorMessage = error.message
