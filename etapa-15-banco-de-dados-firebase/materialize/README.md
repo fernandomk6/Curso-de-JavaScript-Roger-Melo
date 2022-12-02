@@ -1477,6 +1477,14 @@ em nosso arquivo variables.scss.
 </div>
 ```
 
+## Javascript
+
+Essa sessão é uma lista de componentes que precisam de javascript
+e especificações de uso de funções e parametros. Verifique 
+as opções diretamente na documentação dependedo dos componentes
+que precise usar em sua aplicação 
+[materializecss javascript](https://materializecss.com/auto-init.html)
+
 
 
 
