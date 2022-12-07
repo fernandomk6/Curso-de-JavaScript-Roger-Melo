@@ -18,6 +18,3 @@ o elemento ao documentfragment. Ao final do loop adicione o documentFragment ao 
 Dessa forma apenas uma manipulação de dom é feita.
 
 **Manipular o dom é uma tarefa custosa para o processador do cliente**.
-
-
-
