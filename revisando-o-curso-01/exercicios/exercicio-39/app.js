@@ -7,8 +7,7 @@
     - Ou seja, se um número for adicionado ou removido do array, o código
       quebra;
   - O seu desafio neste exercício será deixar essa função flexível a ponto de 
-    somar todos os números do array que ela recebe como argumento, independente
-    de quantos números o array tenha;
+    somar todos os argumentos, independente de quantos argumentos ela receba array tenha;
     - Para conseguir fazer isso, você terá que pesquisar por uma feature 
       chamada "Rest parameters" (sim, pesquisar e entender essa feature é parte
       deste desafio);
@@ -16,11 +15,11 @@
       array que contenha 2 números e com um outro que contenha 4 números.
 */
 
-const numbers = [50, 100, 50]
+const numbers = [50, 100]
 
-const sum = (x, y, z) => x + y + z
+const sum = (...numbers) => numbers.reduce((acc, number) => acc + number, 0)
 
-console.log(sum(...numbers))
+// console.log(sum(...numbers))
 
 /*
   02
@@ -36,7 +35,19 @@ console.log(sum(...numbers))
     utilizando a classe "active".
 */
 
+const accordion = document.querySelector('.accordion')
 
+accordion.addEventListener('click', (event) => {
+  const accordionHeader = event.target.closest('.accordion-header')
+  const accordionBody = accordionHeader.nextElementSibling
+  const accordionId = accordionHeader.dataset.accordionId
+
+  console.log(accordion.children)
+
+  accordionHeader.classList.toggle('active')
+  accordionBody.classList.toggle('active')
+  
+})
 
 /*
   03
