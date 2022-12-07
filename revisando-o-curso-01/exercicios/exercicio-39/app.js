@@ -38,15 +38,32 @@ const sum = (...numbers) => numbers.reduce((acc, number) => acc + number, 0)
 const accordion = document.querySelector('.accordion')
 
 accordion.addEventListener('click', (event) => {
-  const accordionHeader = event.target.closest('.accordion-header')
-  const accordionBody = accordionHeader.nextElementSibling
-  const accordionId = accordionHeader.dataset.accordionId
+  const clickedElement = event.target
+  const accordionsHeader = accordion.querySelectorAll('.accordion-header')
+  const accordionsBody = accordion.querySelectorAll('.accordion-body')
+  const targetAccordionHeader = clickedElement.closest('.accordion-header')
+  const targetAccordionBody = targetAccordionHeader?.nextElementSibling
 
-  console.log(accordion.children)
+  accordionsBody.forEach(accordionBody => {
+    if (accordionBody === targetAccordionBody) {
+      return
+    }
 
-  accordionHeader.classList.toggle('active')
-  accordionBody.classList.toggle('active')
-  
+    accordionBody.classList.remove('active')
+  })
+
+  accordionsHeader.forEach(accordionHeader => {
+    if (accordionHeader === targetAccordionHeader) {
+      return
+    }
+
+    accordionHeader.classList.remove('active')
+  })
+
+  if (targetAccordionHeader && targetAccordionBody) {
+    targetAccordionHeader.classList.toggle('active')
+    targetAccordionBody.classList.toggle('active')
+  }
 })
 
 /*
