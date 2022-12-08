@@ -42,21 +42,23 @@ accordion.addEventListener('click', (event) => {
   const triggerElementsNames = ['STRONG', 'BUTTON', 'I']
   const accordionHeaders = document.querySelectorAll('.accordion-header')
 
-  if (triggerElementsNames.includes(clickedElement.tagName)) {
-    const targetAccordionHeader = clickedElement.closest('.accordion-header')
-
-    accordionHeaders.forEach(accordionHeader => {
-      if (accordionHeader === targetAccordionHeader) {
-        return
-      }
-
-      accordionHeader.classList.remove('active')
-      accordionHeader.nextElementSibling.classList.remove('active')
-    })
-
-    targetAccordionHeader.classList.toggle('active')
-    targetAccordionHeader.nextElementSibling.classList.toggle('active')
+  if (!triggerElementsNames.includes(clickedElement.tagName)) {
+    return
   }
+
+  const targetAccordionHeader = clickedElement.closest('.accordion-header')
+
+  accordionHeaders.forEach(accordionHeader => {
+    if (accordionHeader === targetAccordionHeader) {
+      return
+    }
+
+    accordionHeader.classList.remove('active')
+    accordionHeader.nextElementSibling.classList.remove('active')
+  })
+
+  targetAccordionHeader.classList.toggle('active')
+  targetAccordionHeader.nextElementSibling.classList.toggle('active')
 })
 
 /*
@@ -170,7 +172,21 @@ const wrongDataFormat = [
   'azul-P'
 ]
 
+const getCorrectDataFormat = dataFormat => {
+  const correctDataFormat = dataFormat.reduce((acc, data) => {
+    const [ color, size ] = data.split('-')
+    
+    acc[color] = acc[color] || {}
+    acc[color][size] = acc[color][size] || 0
+    acc[color][size]++
 
+    return acc
+  }, {})
+
+  console.log(correctDataFormat)
+}
+
+getCorrectDataFormat(wrongDataFormat)
 
 /*
   {
