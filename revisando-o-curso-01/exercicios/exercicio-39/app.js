@@ -39,30 +39,23 @@ const accordion = document.querySelector('.accordion')
 
 accordion.addEventListener('click', (event) => {
   const clickedElement = event.target
-  const accordionsHeader = accordion.querySelectorAll('.accordion-header')
-  const accordionsBody = accordion.querySelectorAll('.accordion-body')
-  const targetAccordionHeader = clickedElement.closest('.accordion-header')
-  const targetAccordionBody = targetAccordionHeader?.nextElementSibling
+  const triggerElementsNames = ['STRONG', 'BUTTON', 'I']
+  const accordionHeaders = document.querySelectorAll('.accordion-header')
 
-  accordionsBody.forEach(accordionBody => {
-    if (accordionBody === targetAccordionBody) {
-      return
-    }
+  if (triggerElementsNames.includes(clickedElement.tagName)) {
+    const targetAccordionHeader = clickedElement.closest('.accordion-header')
 
-    accordionBody.classList.remove('active')
-  })
+    accordionHeaders.forEach(accordionHeader => {
+      if (accordionHeader === targetAccordionHeader) {
+        return
+      }
 
-  accordionsHeader.forEach(accordionHeader => {
-    if (accordionHeader === targetAccordionHeader) {
-      return
-    }
+      accordionHeader.classList.remove('active')
+      accordionHeader.nextElementSibling.classList.remove('active')
+    })
 
-    accordionHeader.classList.remove('active')
-  })
-
-  if (targetAccordionHeader && targetAccordionBody) {
     targetAccordionHeader.classList.toggle('active')
-    targetAccordionBody.classList.toggle('active')
+    targetAccordionHeader.nextElementSibling.classList.toggle('active')
   }
 })
 
